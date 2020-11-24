@@ -8,7 +8,7 @@ import java.util.concurrent.LinkedBlockingDeque;
 public class ProcessFilesDemo {
     public static void main(String[] args) throws IOException {
 
-        String pathToFiles = args[0];
+        String pathToFiles = "/home/olga/Desktop/test";
         int readerCount = 4;
         Thread[] reader = new Thread[readerCount];
 
@@ -20,7 +20,7 @@ public class ProcessFilesDemo {
         }
         Arrays.stream(reader).forEach(Thread::start);
 
-        FileMap map = FileMap.getInstance();
+        SingletoneMap map = SingletoneMap.getInstance();
 
         try{
             for(Thread thread : reader){
@@ -30,7 +30,7 @@ public class ProcessFilesDemo {
             System.out.println(e.getMessage());
         }
 
-        map.convertToFiles(args[1]);
+        map.convertToFiles("/home/olga/Desktop/test/t");
 
     }
 }

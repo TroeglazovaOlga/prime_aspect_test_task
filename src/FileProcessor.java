@@ -9,7 +9,8 @@ public class FileProcessor {
             dir.mkdir();
         }
 
-        File file = new File(dir.getPath() + "/" + fileName + ".csv");
+        String separator = System.getProperty("os.name").equals("Linux") ? "/" : "\\";
+        File file = new File(dir.getPath() + separator + fileName + ".csv");
 
         boolean created = file.createNewFile();
         if(created){

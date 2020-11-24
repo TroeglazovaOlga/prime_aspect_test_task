@@ -1,18 +1,18 @@
 import java.io.IOException;
 import java.util.*;
 
-public final class FileMap {
+public final class SingletoneMap {
 
-    private static FileMap instance;
+    private static SingletoneMap instance;
     private final Map<String, Set<String>> fileMap;
 
-    private FileMap() {
+    private SingletoneMap() {
         this.fileMap = new HashMap<>();
     }
 
-    public static FileMap getInstance() {
+    public static SingletoneMap getInstance() {
         if (instance == null) {
-            instance = new FileMap();
+            instance = new SingletoneMap();
         }
         return instance;
     }

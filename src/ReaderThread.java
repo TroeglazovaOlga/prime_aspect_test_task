@@ -2,7 +2,7 @@ import java.io.File;
 import java.io.IOException;
 import java.util.concurrent.BlockingQueue;
 
-public class ReaderThread implements Runnable{
+public class ReaderThread implements Runnable {
     private final BlockingQueue<File> files;
 
     public ReaderThread(BlockingQueue<File> files) {
@@ -23,7 +23,7 @@ public class ReaderThread implements Runnable{
             try {
                 File file = files.take();
                 if (file.isFile()) {
-                    FileMap map = FileMap.getInstance();
+                    SingletoneMap map = SingletoneMap.getInstance();
                     map.setMap(FileParser.parseFile(file));
                     System.out.println(Thread.currentThread().getName() + " process file:  " + file.getName());
                 }
