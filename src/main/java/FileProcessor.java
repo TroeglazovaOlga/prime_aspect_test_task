@@ -22,7 +22,7 @@ public class FileProcessor {
         String oldValues = file.readLine();
         Set<String> valuesSet = new HashSet<>();
 
-        if(oldValues!=null) {
+        if (oldValues!=null) {
             valuesSet.addAll(Arrays.asList(oldValues.split(";")));
         }
         valuesSet.addAll(values);

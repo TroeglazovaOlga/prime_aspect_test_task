@@ -29,7 +29,7 @@ public class ReaderThread implements Runnable {
 
                 if (file.isFile()) {
                     Map<String, Set<String>> map = FileProcessor.parseFile(file);
-                    for(Map.Entry<String, Set<String>> entry: map.entrySet()){
+                    for (Map.Entry<String, Set<String>> entry: map.entrySet()) {
                         queueToWriteFiles.put(entry);
                     }
                     System.out.println("Reader " + Thread.currentThread().getName() + " process file:  " + file.getName());

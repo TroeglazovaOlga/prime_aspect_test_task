@@ -28,15 +28,17 @@ public class ProcessFilesDemo {
         }
         Arrays.stream(writer).forEach(Thread::start);
 
-        try{
+        try {
             for (Thread thread : reader) {
                 thread.join();
             }
+
             Map<String, Set<String>> exitLoopForThread = new HashMap<>();
             exitLoopForThread.put("exit loop", new HashSet<>());
-            for(int i = 0; i<writerCount; i++){
+            for (int i = 0; i<writerCount; i++) {
                 queueToWriteFiles.put(exitLoopForThread.entrySet().iterator().next());
             }
+
             for (Thread thread : writer) {
                 thread.join();
             }

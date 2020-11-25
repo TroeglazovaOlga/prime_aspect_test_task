@@ -23,18 +23,18 @@ public class WriterThread implements Runnable {
             try {
                 Map.Entry<String, Set<String>> entry = queue.take();
 
-                if(entry.getKey().equals("exit loop")) {
+                if (entry.getKey().equals("exit loop")) {
                     System.out.printf("Writer %s finished... \n", Thread.currentThread().getName());
                     return;
                 }
 
                 File file = FileProcessor.createFile(entry.getKey(), path);
-                System.out.println("Writer " + Thread.currentThread().getName() + " opened file:  " + entry.getKey());
 
                 try (RandomAccessFile raf = new RandomAccessFile(String.valueOf(file),  "rw");
                      FileChannel channel = raf.getChannel();
                      FileLock lock = channel.lock()) {
-                        FileProcessor.writeToFile(raf, entry.getValue());
+                    System.out.println("Writer " + Thread.currentThread().getName() + " opened file:  " + entry.getKey());
+                    FileProcessor.writeToFile(raf, entry.getValue());
                 }
 
                 Thread.sleep(150);
