@@ -1,5 +1,6 @@
-import java.io.File;
-import java.io.IOException;
+import java.io.*;
+import java.nio.channels.FileChannel;
+import java.nio.channels.FileLock;
 import java.util.Map;
 import java.util.Set;
 import java.util.concurrent.BlockingQueue;
@@ -19,22 +20,28 @@ public class WriterThread implements Runnable {
         System.out.printf("Writer %s started... \n", Thread.currentThread().getName());
 
         while(true) {
-            if (queue.size()==0) {
-                System.out.printf("Writer %s finished... \n", Thread.currentThread().getName());
-                return;
-            }
-
             try {
                 Map.Entry<String, Set<String>> entry = queue.take();
-                File file = FileProcessor.createFile(entry.getKey(), path);
-                if(file!=null) {
-                    FileProcessor.writeToFile(file, entry.getValue());
+
+                if(entry.getKey().equals("exit loop")) {
+                    System.out.printf("Writer %s finished... \n", Thread.currentThread().getName());
+                    return;
                 }
-                System.out.println("Writer " + Thread.currentThread().getName() + " created file:  " + entry.getKey());
+
+                File file = FileProcessor.createFile(entry.getKey(), path);
+                System.out.println("Writer " + Thread.currentThread().getName() + " opened file:  " + entry.getKey());
+
+                try (RandomAccessFile raf = new RandomAccessFile(String.valueOf(file),  "rw");
+                     FileChannel channel = raf.getChannel();
+                     FileLock lock = channel.lock()) {
+                        FileProcessor.writeToFile(raf, entry.getValue());
+                }
+
                 Thread.sleep(150);
-            } catch (InterruptedException | IOException e) {
-                System.out.println(e.getMessage());
+            } catch (InterruptedException | IOException fileNotFoundException) {
+                fileNotFoundException.printStackTrace();
             }
         }
     }
+
 }

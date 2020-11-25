@@ -1,8 +1,7 @@
 import java.io.*;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
+
+import static java.nio.charset.StandardCharsets.*;
 
 public class FileProcessor {
 
@@ -11,25 +10,26 @@ public class FileProcessor {
         if (!dir.exists()) {
             dir.mkdir();
         }
-
-        String separator = System.getProperty("os.name").equals("Linux") ? "/" : "\\";
-        String fullFileName = pathToDirectory + separator + fileName + ".csv";
-
+        String fullFileName = pathToDirectory + File.separator + fileName + ".csv";
         File file = new File(fullFileName);
-        if (file.exists()) {
-            file.delete();
+        if (!file.exists()) {
+            file.createNewFile();
         }
-
-        boolean created = file.createNewFile();
-        return created ? file : null;
+        return file;
     }
 
-    public static void writeToFile(File file, Set<String> values) throws IOException {
-        try (FileOutputStream fos = new FileOutputStream(file);
-             PrintStream printStream = new PrintStream(fos)) {
-            for (String value: values) {
-                printStream.print(value + ";");
-            }
+    public static void writeToFile(RandomAccessFile file, Set<String> values) throws IOException {
+        String oldValues = file.readLine();
+        Set<String> valuesSet = new HashSet<>();
+
+        if(oldValues!=null) {
+            valuesSet.addAll(Arrays.asList(oldValues.split(";")));
+        }
+        valuesSet.addAll(values);
+
+        file.setLength(0);
+        for(String value: valuesSet) {
+            file.write((value + ";").getBytes(UTF_8));
         }
     }
 
