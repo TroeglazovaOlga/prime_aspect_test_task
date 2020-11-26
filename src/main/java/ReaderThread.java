@@ -6,8 +6,8 @@ import java.util.concurrent.BlockingQueue;
 
 public class ReaderThread implements Runnable {
 
-    final BlockingQueue<File> queueToReadFiles;
-    final BlockingQueue<Map.Entry<String, Set<String>>> queueToWriteFiles;
+    private final BlockingQueue<File> queueToReadFiles; // очередь из необработанных файлов для чтения
+    private final BlockingQueue<Map.Entry<String, Set<String>>> queueToWriteFiles; //очередь из пар название файла - содержимое для записи
 
     public ReaderThread(BlockingQueue<File> queueToReadFiles, BlockingQueue<Map.Entry<String, Set<String>>> queueToWriteFiles) {
         this.queueToReadFiles = queueToReadFiles;
@@ -29,6 +29,7 @@ public class ReaderThread implements Runnable {
 
                 if (file.isFile()) {
                     Map<String, Set<String>> map = FileProcessor.parseFile(file);
+                    //после обработки файла кладем в очередь каждый элемент из Map отдельно
                     for (Map.Entry<String, Set<String>> entry: map.entrySet()) {
                         queueToWriteFiles.put(entry);
                     }

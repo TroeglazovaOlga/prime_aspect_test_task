@@ -7,8 +7,8 @@ import java.util.concurrent.BlockingQueue;
 
 public class WriterThread implements Runnable {
 
-    private final BlockingQueue<Map.Entry<String, Set<String>>> queue;
-    private final String path;
+    private final BlockingQueue<Map.Entry<String, Set<String>>> queue; // очередь из пар: название файла - содержимое
+    private final String path; //путь к этим файлам
 
     public WriterThread(BlockingQueue<Map.Entry<String, Set<String>>> queue, String path) {
         this.queue = queue;
@@ -23,6 +23,7 @@ public class WriterThread implements Runnable {
             try {
                 Map.Entry<String, Set<String>> entry = queue.take();
 
+                //условие выхода из цикла
                 if (entry.getKey().equals("exit loop")) {
                     System.out.printf("Writer %s finished... \n", Thread.currentThread().getName());
                     return;
@@ -30,6 +31,7 @@ public class WriterThread implements Runnable {
 
                 File file = FileProcessor.createFile(entry.getKey(), path);
 
+                //открываем файл и блокируем доступ к нему остальными потоками
                 try (RandomAccessFile raf = new RandomAccessFile(String.valueOf(file),  "rw");
                      FileChannel channel = raf.getChannel();
                      FileLock lock = channel.lock()) {

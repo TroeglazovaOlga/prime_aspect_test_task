@@ -18,6 +18,7 @@ public class FileProcessor {
         return file;
     }
 
+    //считываем с файла строку со значениями, добавляем их в Set, который передали в параметре и перезаписываем файл.
     public static void writeToFile(RandomAccessFile file, Set<String> values) throws IOException {
         String oldValues = file.readLine();
         Set<String> valuesSet = new HashSet<>();
@@ -33,6 +34,8 @@ public class FileProcessor {
         }
     }
 
+    //Считываем первую строку файла (названия столбцов), это будут названия для будущих файлов. Далее построчно считываем остальное и заполняем Map.
+    //Каждый его объект - пара значений, где ключ - название столбца, а значение - Set из строк, стоящих в соответствующем столбце исходного файла.
     public static Map<String, Set<String>> parseFile(File file) throws IOException {
         Map<String, Set<String>> map = new HashMap<>();
 
