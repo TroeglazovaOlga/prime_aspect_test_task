@@ -1,17 +1,16 @@
-import java.io.File;
-import java.io.IOException;
-import java.util.Map;
-import java.util.Set;
+import java.io.*;
+import java.util.*;
 import java.util.concurrent.BlockingQueue;
+import java.util.concurrent.LinkedBlockingDeque;
 
-public class ReaderThread implements Runnable {
+public class Reader implements Runnable {
 
     private final BlockingQueue<File> queueToReadFiles; // очередь из необработанных файлов для чтения
     private final BlockingQueue<Map.Entry<String, Set<String>>> queueToWriteFiles; //очередь из пар название файла - содержимое для записи
 
-    public ReaderThread(BlockingQueue<File> queueToReadFiles, BlockingQueue<Map.Entry<String, Set<String>>> queueToWriteFiles) {
+    public Reader(BlockingQueue<File> queueToReadFiles) {
         this.queueToReadFiles = queueToReadFiles;
-        this.queueToWriteFiles = queueToWriteFiles;
+        this.queueToWriteFiles = new LinkedBlockingDeque<>();
     }
 
     @Override
@@ -28,7 +27,8 @@ public class ReaderThread implements Runnable {
                 File file = queueToReadFiles.take();
 
                 if (file.isFile()) {
-                    Map<String, Set<String>> map = FileProcessor.parseFile(file);
+                    String content = read(file);
+                    Map<String, Set<String>> map = FileProcessor.parse(content);
                     //после обработки файла кладем в очередь каждый элемент из Map отдельно
                     for (Map.Entry<String, Set<String>> entry: map.entrySet()) {
                         queueToWriteFiles.put(entry);
@@ -36,10 +36,36 @@ public class ReaderThread implements Runnable {
                     System.out.println("Reader " + Thread.currentThread().getName() + " process file:  " + file.getName());
                 }
 
+                int writerCount = queueToWriteFiles.size();
+                Thread[] writer = new Thread[writerCount];
+
+                for (int i = 0; i < writerCount; i++) {
+                    Map.Entry<String, Set<String>> entry = queueToWriteFiles.take();
+                    writer[i] = new Thread(new Writer(entry.getKey(), entry.getValue()));
+                }
+                Arrays.stream(writer).forEach(Thread::start);
+                for (Thread thread : writer) {
+                    thread.join();
+                }
                 Thread.sleep(150);
             } catch (InterruptedException | IOException e) {
                 System.out.println(e.getMessage());
             }
         }
+    }
+
+    private String read(File file) throws IOException {
+        StringBuilder result;
+        try (FileInputStream fis = new FileInputStream(file);
+             BufferedReader br = new BufferedReader(new InputStreamReader(fis))) {
+
+            result = new StringBuilder(br.readLine()).append("\n");
+            String line;
+
+            while ((line = br.readLine()) != null) {
+                result.append(line).append("\n");
+            }
+        }
+        return result.toString();
     }
 }
