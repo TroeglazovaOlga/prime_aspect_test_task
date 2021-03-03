@@ -1,7 +1,7 @@
 import java.io.*;
 import java.util.*;
 
-public class FileProcessor {
+public class Parser {
 
     public static Map<String, Set<String>> parse(String content) throws IOException {
         Map<String, Set<String>> map = new HashMap<>();

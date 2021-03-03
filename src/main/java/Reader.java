@@ -1,4 +1,6 @@
 import java.io.*;
+import java.nio.file.Files;
+import java.nio.file.Path;
 import java.util.*;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.LinkedBlockingDeque;
@@ -28,8 +30,7 @@ public class Reader implements Runnable {
 
                 if (file.isFile()) {
                     String content = read(file);
-                    Map<String, Set<String>> map = FileProcessor.parse(content);
-                    //после обработки файла кладем в очередь каждый элемент из Map отдельно
+                    Map<String, Set<String>> map = Parser.parse(content);
                     for (Map.Entry<String, Set<String>> entry: map.entrySet()) {
                         queueToWriteFiles.put(entry);
                     }
@@ -47,7 +48,6 @@ public class Reader implements Runnable {
                 for (Thread thread : writer) {
                     thread.join();
                 }
-                Thread.sleep(150);
             } catch (InterruptedException | IOException e) {
                 System.out.println(e.getMessage());
             }
@@ -55,17 +55,6 @@ public class Reader implements Runnable {
     }
 
     private String read(File file) throws IOException {
-        StringBuilder result;
-        try (FileInputStream fis = new FileInputStream(file);
-             BufferedReader br = new BufferedReader(new InputStreamReader(fis))) {
-
-            result = new StringBuilder(br.readLine()).append("\n");
-            String line;
-
-            while ((line = br.readLine()) != null) {
-                result.append(line).append("\n");
-            }
-        }
-        return result.toString();
+        return new String(Files.readAllBytes(Path.of("src/main/resources/read/" + file.getName())));
     }
 }
