@@ -1,9 +1,11 @@
+package parserservice;
+
 import java.io.*;
 import java.util.*;
 
 public class Parser {
 
-    public static Map<String, Set<String>> parse(String content) throws IOException {
+    public Map<String, Set<String>> parse(String content) throws IOException {
         Map<String, Set<String>> map = new HashMap<>();
 
         String[] rows = content.split("\n");
