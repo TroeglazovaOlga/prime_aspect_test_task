@@ -6,8 +6,8 @@ import java.nio.file.Path;
 
 public class Reader {
 
-    public String read(File file) throws IOException {
-        return String.join("\n", Files.readAllLines(Path.of(file.getAbsolutePath())));
+    public String read(String fullFileName) throws IOException {
+        return String.join("\n", Files.readAllLines(Path.of(fullFileName)));
     }
 
 }

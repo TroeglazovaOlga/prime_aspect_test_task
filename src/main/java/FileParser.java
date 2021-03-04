@@ -2,8 +2,8 @@ import dal.Reader;
 import dal.Writer;
 import parserservice.Parser;
 
-import java.io.File;
 import java.io.IOException;
+import java.nio.file.NoSuchFileException;
 import java.util.*;
 
 public class FileParser {
@@ -15,57 +15,25 @@ public class FileParser {
         this.parser = parser;
     }
 
-    public void parseFile(File file, String pathToWrite) {
+    public void parseFile(String fileName) {
         try {
-            String content = reader.read(file);
+            String content = reader.read(fileName);
             Map<String, Set<String>> map = parser.parse(content);
-            List<Thread> writers = new ArrayList<>();
-
-            for (Map.Entry<String, Set<String>> entry : map.entrySet()) {
-                writers.add(new Thread(() -> {
+            map.forEach((name, fileContent) -> {
+                Thread writeThread = new Thread(() -> {
                     try {
-                        new Writer(entry.getKey(), entry.getValue()).write(pathToWrite);
+                        new Writer(name, fileContent).write();
                     } catch (IOException e) {
                         e.printStackTrace();
                     }
-                }
-                ));
-            }
-            writers.forEach(Thread::start);
-            for (Thread thread : writers) {
-                thread.join();
-            }
-        } catch (IOException | InterruptedException e) {
+                });
+                writeThread.start();
+            });
+        } catch (NoSuchFileException e) {
+            System.out.println("Файл " + fileName + " не найден");
+        }
+        catch (IOException e) {
             e.printStackTrace();
-        }
-    }
-
-    public static void main(String[] args) {
-        String pathToReadFiles = args[0];
-        String pathToWriteFiles = args[1];
-
-        File dir = new File(pathToReadFiles);
-        if (dir.length() > 0) {
-            File[] listFiles = Objects.requireNonNull(new File(pathToReadFiles).listFiles());
-            List<Thread> readers = new ArrayList<>();
-
-            for (File file : listFiles) {
-                readers.add(new Thread(() -> {
-                    new FileParser(new Reader(), new Parser()).parseFile(file, pathToWriteFiles);
-                }));
-            }
-            readers.forEach(Thread::start);
-
-            try {
-                for (Thread thread : readers) {
-                    thread.join();
-                }
-            } catch (InterruptedException e) {
-                System.out.println(e.getMessage());
-            }
-        }
-        else {
-            System.out.println("Папка пуста");
         }
     }
 

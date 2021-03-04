@@ -1,8 +1,10 @@
 package dal;
 
 import java.io.*;
+import java.nio.charset.StandardCharsets;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.util.Set;
-import static java.nio.charset.StandardCharsets.UTF_8;
 
 public class Writer {
     private String fileName;
@@ -13,19 +15,9 @@ public class Writer {
         this.content = content;
     }
 
-    public void write(String path) throws IOException {
-        File dir = new File(path);
-        if (!dir.exists()) {
-            dir.mkdir();
-        }
-        String fullFileName = path + File.separator + fileName + ' ' + System.currentTimeMillis() + ".csv";
-        File file = new File(fullFileName);
-        file.createNewFile();
-        try (RandomAccessFile raf = new RandomAccessFile(String.valueOf(file),  "rw")) {
-            for(String value: content) {
-                raf.write((value + ";").getBytes(UTF_8));
-            }
-        }
+    public void write() throws IOException {
+        String fullFileName = fileName + System.currentTimeMillis() + ".csv";
+        Files.write(Paths.get(fullFileName), String.join(";", content).getBytes(StandardCharsets.UTF_8));
     }
 
 }
