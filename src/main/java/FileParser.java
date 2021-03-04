@@ -41,8 +41,8 @@ public class FileParser {
     }
 
     public static void main(String[] args) {
-        String pathToReadFiles = "src/main/resources/read/";
-        String pathToWriteFiles = "src/main/resources/write/";
+        String pathToReadFiles = args[0];
+        String pathToWriteFiles = args[1];
 
         File dir = new File(pathToReadFiles);
         if (dir.length() > 0) {
