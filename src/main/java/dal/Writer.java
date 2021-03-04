@@ -1,21 +1,19 @@
+package dal;
+
 import java.io.*;
 import java.util.Set;
-
 import static java.nio.charset.StandardCharsets.UTF_8;
 
 public class Writer {
-
     private String fileName;
     private Set<String> content;
-    private final String path = "src/main/resources/write/";
 
     public Writer(String fileName, Set<String> content) {
         this.fileName = fileName;
         this.content = content;
     }
 
-    //считываем с файла строку со значениями, добавляем их в Set, который передали в параметре и перезаписываем файл.
-    public void write() throws IOException {
+    public void write(String path) throws IOException {
         File dir = new File(path);
         if (!dir.exists()) {
             dir.mkdir();
