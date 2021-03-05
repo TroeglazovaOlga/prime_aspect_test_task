@@ -1,11 +1,14 @@
-package parserservice;
+package io.primeaspect.csvparser.parserservice;
+
+import org.springframework.stereotype.Service;
 
 import java.io.*;
 import java.util.*;
 
+@Service
 public class Parser {
 
-    public Map<String, Set<String>> parse(String content) throws IOException {
+    public Map<String, String> parse(String content) throws IOException {
         Map<String, Set<String>> map = new HashMap<>();
 
         String[] rows = content.split("\n");
@@ -26,6 +29,9 @@ public class Parser {
             }
         }
 
-        return map;
+        Map<String, String> result = new HashMap<>();
+        map.forEach((name, body) -> result.put(name, String.join(";", body)));
+
+        return result;
     }
 }

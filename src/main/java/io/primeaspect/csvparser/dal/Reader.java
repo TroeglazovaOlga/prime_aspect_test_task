@@ -1,4 +1,4 @@
-package dal;
+package io.primeaspect.csvparser.dal;
 
 import java.io.IOException;
 import java.nio.file.Files;
