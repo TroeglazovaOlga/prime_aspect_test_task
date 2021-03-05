@@ -1,6 +1,8 @@
-import dal.Reader;
-import dal.Writer;
-import parserservice.Parser;
+package io.primeaspect.csvparser;
+
+import io.primeaspect.csvparser.dal.Reader;
+import io.primeaspect.csvparser.dal.Writer;
+import io.primeaspect.csvparser.parserservice.Parser;
 
 import java.io.IOException;
 import java.nio.file.NoSuchFileException;
@@ -18,7 +20,7 @@ public class FileParser {
     public void parseFile(String fileName) {
         try {
             String content = reader.read(fileName);
-            Map<String, Set<String>> map = parser.parse(content);
+            Map<String, String> map = parser.parse(content);
             map.forEach((name, fileContent) -> {
                 Thread writeThread = new Thread(() -> {
                     try {
