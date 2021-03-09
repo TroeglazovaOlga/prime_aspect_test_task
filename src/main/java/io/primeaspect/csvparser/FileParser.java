@@ -2,7 +2,7 @@ package io.primeaspect.csvparser;
 
 import io.primeaspect.csvparser.dal.Reader;
 import io.primeaspect.csvparser.dal.Writer;
-import io.primeaspect.csvparser.parserservice.Parser;
+import io.primeaspect.csvparser.service.Parser;
 
 import java.io.IOException;
 import java.nio.file.NoSuchFileException;
@@ -33,8 +33,7 @@ public class FileParser {
             });
         } catch (NoSuchFileException e) {
             System.out.println("Файл " + fileName + " не найден");
-        }
-        catch (IOException e) {
+        } catch (IOException e) {
             e.printStackTrace();
         }
     }

@@ -1,10 +1,11 @@
-package io.primeaspect.csvparser.dto;
+package io.primeaspect.csvparser.model;
 
-public class EntryDto {
+public class File {
+
     private String name;
     private String content;
 
-    public EntryDto(String name, String content) {
+    public File(String name, String content) {
         this.name = name;
         this.content = content;
     }
@@ -23,5 +24,13 @@ public class EntryDto {
 
     public void setContent(String content) {
         this.content = content;
+    }
+
+    @Override
+    public String toString() {
+        return "File{" +
+                "name='" + name + '\'' +
+                ", content='" + content + '\'' +
+                '}';
     }
 }
