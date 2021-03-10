@@ -26,6 +26,7 @@ public class DataService {
             resultList.add(new DataDto(name, content));
             repository.save(new Data(name, content));
         });
+        repository.findAll().forEach(System.out::println);
         return new DataListDto(resultList);
     }
 }

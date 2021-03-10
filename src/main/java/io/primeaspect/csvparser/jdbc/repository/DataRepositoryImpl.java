@@ -16,13 +16,13 @@ public class DataRepositoryImpl implements DataRepository {
 
     public int save(Data data) {
         return jdbcTemplate.update(
-                "insert into files (name, content) values(?,?)",
+                "insert into data (name, content) values(?,?)",
                 data.getName(), data.getContent());
     }
 
     public List<Data> findAll() {
         return jdbcTemplate.query(
-                "select * from files",
+                "select * from data",
                 (result, rowNum) ->
                         new Data(
                                 result.getString("name"),

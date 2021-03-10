@@ -27,7 +27,7 @@ public class Data {
 
     @Override
     public String toString() {
-        return "File{" +
+        return "Data{" +
                 "name='" + name + '\'' +
                 ", content='" + content + '\'' +
                 '}';
