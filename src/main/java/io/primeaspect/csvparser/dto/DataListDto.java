@@ -1,19 +1,21 @@
 package io.primeaspect.csvparser.dto;
 
+import io.primeaspect.csvparser.model.Data;
+
 import java.util.List;
 
 public class DataListDto {
-    private List<DataDto> resultList;
+    private List<Data> resultList;
 
-    public DataListDto(List<DataDto> resultList) {
+    public DataListDto(List<Data> resultList) {
         this.resultList = resultList;
     }
 
-    public List<DataDto> getList() {
+    public List<Data> getList() {
         return resultList;
     }
 
-    public void setList(List<DataDto> resultList) {
+    public void setList(List<Data> resultList) {
         this.resultList = resultList;
     }
 }

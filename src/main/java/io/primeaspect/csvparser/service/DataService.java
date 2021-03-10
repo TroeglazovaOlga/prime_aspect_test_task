@@ -1,6 +1,5 @@
 package io.primeaspect.csvparser.service;
 
-import io.primeaspect.csvparser.dto.DataDto;
 import io.primeaspect.csvparser.dto.DataListDto;
 import io.primeaspect.csvparser.jdbc.repository.DataRepository;
 import io.primeaspect.csvparser.model.Data;
@@ -21,12 +20,15 @@ public class DataService {
     }
 
     public DataListDto parse(String request) throws IOException {
-        List<DataDto> resultList = new ArrayList<>();
+        List<Data> resultList = new ArrayList<>();
         parser.parse(request).forEach((name, content) -> {
-            resultList.add(new DataDto(name, content));
-            repository.save(new Data(name, content));
+            resultList.add(new Data(name, content));
         });
-        repository.findAll().forEach(System.out::println);
+        repository.save(resultList);
         return new DataListDto(resultList);
+    }
+
+    public Data get(String name) throws IOException {
+        return repository.findByName(name);
     }
 }
