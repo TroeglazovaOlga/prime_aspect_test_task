@@ -2,12 +2,14 @@ package io.primeaspect.csvparser.service;
 
 import org.springframework.stereotype.Service;
 
-import java.io.*;
-import java.util.*;
+import java.io.IOException;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Map;
+import java.util.Set;
 
 @Service
-public class Parser {
-
+public class ParserService {
     public Map<String, String> parse(String content) throws IOException {
         Map<String, Set<String>> map = new HashMap<>();
 

@@ -1,10 +1,10 @@
 package io.primeaspect.csvparser.dto;
 
-public class FileDto {
+public class DataDto {
     private String name;
     private String content;
 
-    public FileDto(String name, String content) {
+    public DataDto(String name, String content) {
         this.name = name;
         this.content = content;
     }

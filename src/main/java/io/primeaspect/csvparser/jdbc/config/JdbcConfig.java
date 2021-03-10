@@ -3,13 +3,14 @@ package io.primeaspect.csvparser.jdbc.config;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.datasource.SimpleDriverDataSource;
 
 import javax.sql.DataSource;
 
 @Configuration
-@ComponentScan("cio.primeaspect.csvparser.jdbc")
-public class SpringJdbcConfig {
+@ComponentScan("io.primeaspect.csvparser.jdbc")
+public class JdbcConfig {
     @Bean
     public DataSource dataSource() {
         SimpleDriverDataSource dataSource = new SimpleDriverDataSource();
@@ -19,5 +20,15 @@ public class SpringJdbcConfig {
         dataSource.setPassword("");
 
         return dataSource;
+    }
+
+    @Bean
+    public JdbcTemplate jdbcTemplate(DataSource dataSource) {
+        JdbcTemplate jdbcTemplate = new JdbcTemplate(dataSource);
+        jdbcTemplate.execute("drop table files if exists");
+        jdbcTemplate.execute("create table files(" +
+                "id serial, name varchar(255), content varchar(255))");
+
+        return jdbcTemplate;
     }
 }

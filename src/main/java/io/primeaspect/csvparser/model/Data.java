@@ -1,11 +1,10 @@
 package io.primeaspect.csvparser.model;
 
-public class File {
-
+public class Data {
     private String name;
     private String content;
 
-    public File(String name, String content) {
+    public Data(String name, String content) {
         this.name = name;
         this.content = content;
     }

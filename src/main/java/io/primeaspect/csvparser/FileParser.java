@@ -2,7 +2,7 @@ package io.primeaspect.csvparser;
 
 import io.primeaspect.csvparser.dal.Reader;
 import io.primeaspect.csvparser.dal.Writer;
-import io.primeaspect.csvparser.service.Parser;
+import io.primeaspect.csvparser.service.ParserService;
 
 import java.io.IOException;
 import java.nio.file.NoSuchFileException;
@@ -10,9 +10,9 @@ import java.util.*;
 
 public class FileParser {
     private Reader reader;
-    private Parser parser;
+    private ParserService parser;
 
-    public FileParser(Reader reader, Parser parser) {
+    public FileParser(Reader reader, ParserService parser) {
         this.reader = reader;
         this.parser = parser;
     }
