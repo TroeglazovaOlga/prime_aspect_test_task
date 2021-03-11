@@ -18,10 +18,10 @@ public class DataRepositoryImpl implements DataRepository {
     }
 
     public int[] save(List<Data> data) {
+        String updateSql = "insert into data (name, content) values(?,?)";
         return jdbcTemplate.batchUpdate(
-                "insert into data (name, content) values(?,?)",
+                updateSql,
                 new BatchPreparedStatementSetter() {
-
                     public void setValues(PreparedStatement ps, int i)
                             throws SQLException {
                         ps.setString(1, data.get(i).getName());
@@ -31,13 +31,13 @@ public class DataRepositoryImpl implements DataRepository {
                     public int getBatchSize() {
                         return data.size();
                     }
-
                 });
     }
 
     public Data findByName(String name) {
+        String selectSql = "select * from data where name = ?";
         return jdbcTemplate.queryForObject(
-                "select * from data where name = ?",
+                selectSql,
                 new Object[]{name},
                 (result, rowNum) ->
                         new Data(
