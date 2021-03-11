@@ -6,8 +6,8 @@ import io.primeaspect.csvparser.model.Data;
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class DataService {
@@ -20,10 +20,11 @@ public class DataService {
     }
 
     public DataListDto parse(String request) throws IOException {
-        List<Data> resultList = new ArrayList<>();
-        parser.parse(request).forEach((name, content) -> {
-            resultList.add(new Data(name, content));
-        });
+        List<Data> resultList = parser.parse(request)
+                .entrySet()
+                .stream()
+                .map(set -> new Data(set.getKey(), set.getValue()))
+                .collect(Collectors.toList());
         repository.save(resultList);
         return new DataListDto(resultList);
     }
