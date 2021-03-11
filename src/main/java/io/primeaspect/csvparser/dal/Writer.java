@@ -18,5 +18,4 @@ public class Writer {
         String fullFileName = fileName + System.currentTimeMillis() + ".csv";
         Files.write(Paths.get(fullFileName), content.getBytes(StandardCharsets.UTF_8));
     }
-
 }
