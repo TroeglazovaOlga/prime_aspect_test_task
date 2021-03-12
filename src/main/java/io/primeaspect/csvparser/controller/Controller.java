@@ -6,7 +6,6 @@ import io.primeaspect.csvparser.service.DataService;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.constraints.NotNull;
-import javax.ws.rs.QueryParam;
 import java.io.IOException;
 
 @RestController

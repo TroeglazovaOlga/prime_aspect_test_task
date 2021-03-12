@@ -1,5 +1,7 @@
 package io.primeaspect.csvparser.model;
 
+import java.util.Objects;
+
 public class Data {
     private String name;
     private String content;
@@ -23,6 +25,19 @@ public class Data {
 
     public void setContent(String content) {
         this.content = content;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Data data = (Data) o;
+        return Objects.equals(name, data.name) && Objects.equals(content, data.content);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(name, content);
     }
 
     @Override
