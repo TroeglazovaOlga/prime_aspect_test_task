@@ -1,3 +1,5 @@
+package io.primeaspect.csvparser.test;
+
 import io.primeaspect.csvparser.service.ParserService;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;

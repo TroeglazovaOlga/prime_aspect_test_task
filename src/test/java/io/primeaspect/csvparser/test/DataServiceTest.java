@@ -1,3 +1,5 @@
+package io.primeaspect.csvparser.test;
+
 import io.primeaspect.csvparser.dto.DataListDto;
 import io.primeaspect.csvparser.jdbc.repository.DataRepository;
 import io.primeaspect.csvparser.jdbc.repository.DataRepositoryImpl;
