@@ -2,35 +2,26 @@ package io.primeaspect.csvparser.test;
 
 import io.primeaspect.csvparser.dto.DataListDto;
 import io.primeaspect.csvparser.jdbc.repository.DataRepository;
-import io.primeaspect.csvparser.jdbc.repository.DataRepositoryImpl;
 import io.primeaspect.csvparser.model.Data;
 import io.primeaspect.csvparser.service.DataService;
 import io.primeaspect.csvparser.service.ParserService;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
-import org.springframework.jdbc.core.JdbcTemplate;
-import org.springframework.jdbc.datasource.embedded.EmbeddedDatabaseBuilder;
-import org.springframework.jdbc.datasource.embedded.EmbeddedDatabaseType;
+import org.mockito.Mockito;
 
-import javax.sql.DataSource;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
+
+import static org.mockito.Mockito.when;
 
 public class DataServiceTest {
-    private static DataService service;
-
-    @BeforeAll
-    public static void beforeAll() {
-        DataSource dataSource = new EmbeddedDatabaseBuilder().setType(EmbeddedDatabaseType.H2)
-                .addScript("classpath:schema.sql")
-                .build();
-        JdbcTemplate jdbcTemplate = new JdbcTemplate(dataSource);
-        ParserService parser = new ParserService();
-        DataRepository repository = new DataRepositoryImpl(jdbcTemplate);
-        service = new DataService(parser, repository);
-    }
+    private ParserService parser = Mockito.mock(ParserService.class);
+    private DataRepository repository = Mockito.mock(DataRepository.class);
+    private DataService service = new DataService(parser, repository);
 
     @Test
     public void parseTest() throws IOException {
@@ -39,31 +30,31 @@ public class DataServiceTest {
                 "1;жорж;м;\n" +
                 "2;мария;ж;\n" +
                 "3;пьер;м;";
-        DataListDto response = service.parse(request);
 
-        List<Data> list = new ArrayList<>();
-        list.add(new Data("id", "0;1;2;3;"));
-        list.add(new Data("name", "ричард;жорж;мария;пьер;"));
-        list.add(new Data("sex", "м;ж;"));
-        DataListDto expected = new DataListDto(list);
+        Map<String, String> expectedMap = new LinkedHashMap<>();
+        expectedMap.put("id", "0;1;2;3;");
+        expectedMap.put("name", "ричард;жорж;мария;пьер;");
+        expectedMap.put("sex", "м;ж;");
 
-        Assertions.assertEquals(response, expected);
+        List<Data> expectedList = expectedMap.entrySet()
+                .stream()
+                .map(set -> new Data(set.getKey(), set.getValue()))
+                .collect(Collectors.toList());
+
+        when(parser.parse(request)).thenReturn(expectedMap);
+
+        Assertions.assertEquals(service.parse(request), new DataListDto(expectedList));
     }
 
     @Test
-    public void getTest() {
-        List<Data> list = new ArrayList<>();
-        list.add(new Data("id", "0;1;2;3;"));
-        list.add(new Data("name", "ричард;жорж;мария;пьер;"));
-        list.add(new Data("sex", "м;ж;"));
+    public void getTest() throws IOException {
+        Data requestData = new Data("path", "/hello/уточка;/hello/лошадка;/hello/собачка;");
+        List<Data> request = new ArrayList<>();
+        request.add(requestData);
+        repository.save(request);
 
-        list.forEach(data -> {
-            try {
-                Data response = service.get(data.getName());
-                Assertions.assertEquals(response, data);
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-        });
+        when(repository.get(requestData.getName())).thenReturn(requestData);
+
+        Assertions.assertEquals(service.get(requestData.getName()), requestData);
     }
 }

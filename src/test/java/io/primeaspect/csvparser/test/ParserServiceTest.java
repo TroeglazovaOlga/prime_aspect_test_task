@@ -13,18 +13,18 @@ public class ParserServiceTest {
 
     @Test
     public void parseTest() throws IOException {
-        String content = "id;name;sex;\n" +
+        String request = "id;name;sex;\n" +
                 "0;ричард;м;\n" +
                 "1;жорж;м;\n" +
                 "2;мария;ж;\n" +
                 "3;пьер;м;";
-        Map<String, String> result = parser.parse(content);
+        Map<String, String> response = parser.parse(request);
 
         Map<String, String> expected = new LinkedHashMap<>();
         expected.put("id", "0;1;2;3;");
         expected.put("name", "ричард;жорж;мария;пьер;");
         expected.put("sex", "м;ж;");
 
-        Assertions.assertEquals(result, expected);
+        Assertions.assertEquals(response, expected);
     }
 }

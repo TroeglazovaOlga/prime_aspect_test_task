@@ -47,4 +47,16 @@ public class DataRepositoryImpl implements DataRepository {
         );
     }
 
+    public List<Data> getAll() {
+        String selectSql = "select * from data";
+        return jdbcTemplate.query(
+                selectSql,
+                (result, rowNum) ->
+                        new Data(
+                                result.getString("name"),
+                                result.getString("content")
+                        )
+        );
+    }
+
 }

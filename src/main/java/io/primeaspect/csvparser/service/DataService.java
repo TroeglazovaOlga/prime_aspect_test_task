@@ -32,4 +32,8 @@ public class DataService {
     public Data get(String name) throws IOException {
         return repository.get(name);
     }
+
+    public DataListDto getAll() throws IOException {
+        return new DataListDto(repository.getAll());
+    }
 }

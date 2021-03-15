@@ -11,7 +11,8 @@ import org.springframework.jdbc.datasource.embedded.EmbeddedDatabaseBuilder;
 import org.springframework.jdbc.datasource.embedded.EmbeddedDatabaseType;
 
 import javax.sql.DataSource;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
 
 public class DataRepositoryTest {
     private static DataRepository repository;
@@ -23,28 +24,26 @@ public class DataRepositoryTest {
                 .build();
         JdbcTemplate jdbcTemplate = new JdbcTemplate(dataSource);
         repository = new DataRepositoryImpl(jdbcTemplate);
-
-        List<Data> testContent = new LinkedList<>();
-        testContent.add(new Data("path", "/hello/уточка;/hello/лошадка;/hello/собачка;"));
-        repository.save(testContent);
     }
 
     @Test
     public void saveTest() {
-        List<Data> list = new ArrayList<>();
-        list.add(new Data("id", "0;1;2;3;"));
-        list.add(new Data("name", "ричард;жорж;мария;пьер;"));
-        list.add(new Data("sex", "м;ж;"));
+        List<Data> requestList = new ArrayList<>();
+        requestList.add(new Data("id", "0;1;2;3;"));
+        requestList.add(new Data("name", "ричард;жорж;мария;пьер;"));
+        requestList.add(new Data("sex", "м;ж;"));
 
-        int[] result = repository.save(list);
-        for (int i : result) {
-            Assertions.assertEquals(i, 1);
-        }
+        repository.save(requestList);
+        Assertions.assertEquals(requestList, repository.getAll());
     }
 
     @Test
     public void getTest() {
-        Data data = repository.get("id");
-        Assertions.assertEquals(data, new Data("id", "0;1;2;3;"));
+        Data requestData = new Data("path", "/hello/уточка;/hello/лошадка;/hello/собачка;");
+        List<Data> requestList = new ArrayList<>();
+        requestList.add(requestData);
+
+        repository.save(requestList);
+        Assertions.assertEquals(requestData, repository.get(requestData.getName()));
     }
 }
