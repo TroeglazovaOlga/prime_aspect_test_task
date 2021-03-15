@@ -6,5 +6,6 @@ import java.util.List;
 
 public interface DataRepository {
     int[] save(List<Data> data);
-    Data findByName(String name);
+    Data get(String name);
+    List<Data> getAll();
 }

@@ -6,8 +6,8 @@ import io.primeaspect.csvparser.service.DataService;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.constraints.NotNull;
-import javax.ws.rs.QueryParam;
 import java.io.IOException;
+import java.util.List;
 
 @RestController
 public class Controller {
@@ -25,5 +25,10 @@ public class Controller {
     @GetMapping("/data/{name}")
     public Data get(@PathVariable @NotNull String name) throws IOException {
         return service.get(name);
+    }
+
+    @GetMapping("/data")
+    public DataListDto getAll() throws IOException {
+        return service.getAll();
     }
 }

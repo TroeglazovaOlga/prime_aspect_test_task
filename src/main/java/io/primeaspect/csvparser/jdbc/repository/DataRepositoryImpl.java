@@ -34,7 +34,7 @@ public class DataRepositoryImpl implements DataRepository {
                 });
     }
 
-    public Data findByName(String name) {
+    public Data get(String name) {
         String selectSql = "select * from data where name = ?";
         return jdbcTemplate.queryForObject(
                 selectSql,
@@ -46,4 +46,17 @@ public class DataRepositoryImpl implements DataRepository {
                         )
         );
     }
+
+    public List<Data> getAll() {
+        String selectSql = "select * from data";
+        return jdbcTemplate.query(
+                selectSql,
+                (result, rowNum) ->
+                        new Data(
+                                result.getString("name"),
+                                result.getString("content")
+                        )
+        );
+    }
+
 }
