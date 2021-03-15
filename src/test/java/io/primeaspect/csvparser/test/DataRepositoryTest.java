@@ -34,7 +34,8 @@ public class DataRepositoryTest {
         requestList.add(new Data("sex", "м;ж;"));
 
         repository.save(requestList);
-        Assertions.assertEquals(requestList, repository.getAll());
+        List<Data> responseList = repository.getAll();
+        Assertions.assertEquals(requestList, responseList);
     }
 
     @Test
@@ -44,6 +45,7 @@ public class DataRepositoryTest {
         requestList.add(requestData);
 
         repository.save(requestList);
-        Assertions.assertEquals(requestData, repository.get(requestData.getName()));
+        Data response = repository.get(requestData.getName());
+        Assertions.assertEquals(requestData, response);
     }
 }

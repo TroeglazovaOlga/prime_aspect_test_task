@@ -43,7 +43,8 @@ public class DataServiceTest {
 
         when(parser.parse(request)).thenReturn(expectedMap);
 
-        Assertions.assertEquals(service.parse(request), new DataListDto(expectedList));
+        DataListDto response = service.parse(request);
+        Assertions.assertEquals(response, new DataListDto(expectedList));
     }
 
     @Test
@@ -55,6 +56,7 @@ public class DataServiceTest {
 
         when(repository.get(requestData.getName())).thenReturn(requestData);
 
-        Assertions.assertEquals(service.get(requestData.getName()), requestData);
+        Data response = service.get(requestData.getName());
+        Assertions.assertEquals(response, requestData);
     }
 }
