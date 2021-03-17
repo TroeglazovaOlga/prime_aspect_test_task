@@ -1,6 +1,7 @@
 package io.primeaspect.csvparser.jdbc.repository;
 
 import io.primeaspect.csvparser.model.Data;
+import io.primeaspect.csvparser.repository.DataRepository;
 import org.springframework.jdbc.core.BatchPreparedStatementSetter;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
@@ -9,17 +10,18 @@ import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.util.List;
 
-@Repository
-public class DataRepositoryImpl implements DataRepository {
+@Repository("JDBC")
+public class DataRepositoryJdbc implements DataRepository {
     private JdbcTemplate jdbcTemplate;
 
-    public DataRepositoryImpl(JdbcTemplate jdbcTemplate) {
+    public DataRepositoryJdbc(JdbcTemplate jdbcTemplate) {
         this.jdbcTemplate = jdbcTemplate;
     }
 
-    public int[] save(List<Data> data) {
+    @Override
+    public void save(List<Data> data) {
         String updateSql = "insert into data (name, content) values(?,?)";
-        return jdbcTemplate.batchUpdate(
+        jdbcTemplate.batchUpdate(
                 updateSql,
                 new BatchPreparedStatementSetter() {
                     public void setValues(PreparedStatement ps, int i)
@@ -34,6 +36,7 @@ public class DataRepositoryImpl implements DataRepository {
                 });
     }
 
+    @Override
     public Data get(String name) {
         String selectSql = "select * from data where name = ?";
         return jdbcTemplate.queryForObject(
@@ -47,6 +50,7 @@ public class DataRepositoryImpl implements DataRepository {
         );
     }
 
+    @Override
     public List<Data> getAll() {
         String selectSql = "select * from data";
         return jdbcTemplate.query(

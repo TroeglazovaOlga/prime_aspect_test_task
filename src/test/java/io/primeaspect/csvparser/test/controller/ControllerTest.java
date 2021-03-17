@@ -1,4 +1,4 @@
-package io.primeaspect.csvparser.test;
+package io.primeaspect.csvparser.test.controller;
 
 import io.primeaspect.csvparser.controller.Controller;
 import io.primeaspect.csvparser.dto.DataListDto;

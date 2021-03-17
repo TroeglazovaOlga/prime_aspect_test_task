@@ -1,7 +1,7 @@
-package io.primeaspect.csvparser.test;
+package io.primeaspect.csvparser.test.base;
 
-import io.primeaspect.csvparser.jdbc.repository.DataRepository;
-import io.primeaspect.csvparser.jdbc.repository.DataRepositoryImpl;
+import io.primeaspect.csvparser.repository.DataRepository;
+import io.primeaspect.csvparser.jdbc.repository.DataRepositoryJdbc;
 import io.primeaspect.csvparser.model.Data;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeAll;
@@ -14,19 +14,13 @@ import javax.sql.DataSource;
 import java.util.ArrayList;
 import java.util.List;
 
-public class DataRepositoryTest {
-    private static DataRepository repository;
+public class DataRepositoryBaseTest {
+    private final DataRepository repository;
 
-    @BeforeAll
-    public static void beforeAll() {
-        DataSource dataSource = new EmbeddedDatabaseBuilder().setType(EmbeddedDatabaseType.H2)
-                .addScript("classpath:schema.sql")
-                .build();
-        JdbcTemplate jdbcTemplate = new JdbcTemplate(dataSource);
-        repository = new DataRepositoryImpl(jdbcTemplate);
+    public DataRepositoryBaseTest(DataRepository repository) {
+        this.repository = repository;
     }
 
-    @Test
     public void saveTest() {
         List<Data> requestList = new ArrayList<>();
         requestList.add(new Data("id", "0;1;2;3;"));
@@ -38,7 +32,6 @@ public class DataRepositoryTest {
         Assertions.assertEquals(requestList, responseList);
     }
 
-    @Test
     public void getTest() {
         Data requestData = new Data("path", "/hello/уточка;/hello/лошадка;/hello/собачка;");
         List<Data> requestList = new ArrayList<>();

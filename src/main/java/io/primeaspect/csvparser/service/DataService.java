@@ -1,7 +1,7 @@
 package io.primeaspect.csvparser.service;
 
 import io.primeaspect.csvparser.dto.DataListDto;
-import io.primeaspect.csvparser.jdbc.repository.DataRepository;
+import io.primeaspect.csvparser.repository.DataRepository;
 import io.primeaspect.csvparser.model.Data;
 import org.springframework.stereotype.Service;
 
