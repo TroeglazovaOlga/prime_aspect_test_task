@@ -1,7 +1,6 @@
 package io.primeaspect.csvparser.test.service;
 
-import io.primeaspect.csvparser.jdbc.repository.DataRepositoryJdbc;
-import io.primeaspect.csvparser.mybatis.repository.DataRepositoryMyBatis;
+import io.primeaspect.csvparser.repository.impl.mybatis.repository.DataRepositoryMyBatis;
 import io.primeaspect.csvparser.repository.DataRepository;
 import io.primeaspect.csvparser.service.DataService;
 import io.primeaspect.csvparser.service.ParserService;

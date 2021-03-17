@@ -1,6 +1,6 @@
 package io.primeaspect.csvparser.test.repository;
 
-import io.primeaspect.csvparser.jdbc.repository.DataRepositoryJdbc;
+import io.primeaspect.csvparser.repository.impl.jdbc.DataRepositoryJdbc;
 import io.primeaspect.csvparser.repository.DataRepository;
 import io.primeaspect.csvparser.test.base.DataRepositoryBaseTest;
 import org.junit.jupiter.api.BeforeAll;

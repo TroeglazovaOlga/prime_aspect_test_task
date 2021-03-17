@@ -6,6 +6,9 @@ public class Data {
     private String name;
     private String content;
 
+    public Data() {
+    }
+
     public Data(String name, String content) {
         this.name = name;
         this.content = content;

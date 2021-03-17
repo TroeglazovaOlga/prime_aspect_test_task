@@ -1,4 +1,4 @@
-package io.primeaspect.csvparser.jdbc.repository;
+package io.primeaspect.csvparser.repository.impl.jdbc;
 
 import io.primeaspect.csvparser.model.Data;
 import io.primeaspect.csvparser.repository.DataRepository;
@@ -61,6 +61,11 @@ public class DataRepositoryJdbc implements DataRepository {
                                 result.getString("content")
                         )
         );
+    }
+
+    @Override
+    public void deleteAll() {
+        jdbcTemplate.update("delete from results");
     }
 
 }
