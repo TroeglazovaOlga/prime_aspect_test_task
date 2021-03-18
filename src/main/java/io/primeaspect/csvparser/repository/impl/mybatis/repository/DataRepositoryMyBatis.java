@@ -1,7 +1,7 @@
-package io.primeaspect.csvparser.mybatis.repository;
+package io.primeaspect.csvparser.repository.impl.mybatis.repository;
 
 import io.primeaspect.csvparser.model.Data;
-import io.primeaspect.csvparser.mybatis.mapper.DataMapper;
+import io.primeaspect.csvparser.repository.impl.mybatis.mapper.DataMapper;
 import io.primeaspect.csvparser.repository.DataRepository;
 import org.springframework.context.annotation.Primary;
 import org.springframework.stereotype.Repository;
@@ -9,7 +9,7 @@ import org.springframework.stereotype.Repository;
 import java.util.List;
 
 @Primary
-@Repository("MyBatis")
+@Repository("myBatis")
 public class DataRepositoryMyBatis implements DataRepository {
     private final DataMapper mapper;
 
@@ -19,7 +19,7 @@ public class DataRepositoryMyBatis implements DataRepository {
 
     @Override
     public void save(List<Data> data) {
-        mapper.save(data);
+        mapper.createData(data);
     }
 
     @Override
@@ -30,5 +30,10 @@ public class DataRepositoryMyBatis implements DataRepository {
     @Override
     public List<Data> getAll() {
         return mapper.getAll();
+    }
+
+    @Override
+    public void deleteAll() {
+        mapper.deleteAll();
     }
 }

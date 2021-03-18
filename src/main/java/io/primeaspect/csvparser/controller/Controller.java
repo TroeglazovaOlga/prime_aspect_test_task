@@ -2,6 +2,7 @@ package io.primeaspect.csvparser.controller;
 
 import io.primeaspect.csvparser.dto.DataListDto;
 import io.primeaspect.csvparser.model.Data;
+import io.primeaspect.csvparser.model.DataRequest;
 import io.primeaspect.csvparser.service.DataService;
 import org.springframework.web.bind.annotation.*;
 
@@ -18,8 +19,8 @@ public class Controller {
     }
 
     @PostMapping("/parse")
-    public DataListDto parse(@RequestBody String body) throws IOException {
-        return service.parse(body);
+    public DataListDto parse(@RequestBody DataRequest body) throws IOException {
+        return service.parse(body.getContent());
     }
 
     @GetMapping("/data/{name}")

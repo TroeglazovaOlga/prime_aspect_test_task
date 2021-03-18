@@ -1,16 +1,9 @@
 package io.primeaspect.csvparser.test.base;
 
 import io.primeaspect.csvparser.repository.DataRepository;
-import io.primeaspect.csvparser.jdbc.repository.DataRepositoryJdbc;
 import io.primeaspect.csvparser.model.Data;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.BeforeAll;
-import org.junit.jupiter.api.Test;
-import org.springframework.jdbc.core.JdbcTemplate;
-import org.springframework.jdbc.datasource.embedded.EmbeddedDatabaseBuilder;
-import org.springframework.jdbc.datasource.embedded.EmbeddedDatabaseType;
 
-import javax.sql.DataSource;
 import java.util.ArrayList;
 import java.util.List;
 

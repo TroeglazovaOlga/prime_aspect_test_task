@@ -1,8 +1,10 @@
 package io.primeaspect.csvparser.test.controller;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import io.primeaspect.csvparser.controller.Controller;
 import io.primeaspect.csvparser.dto.DataListDto;
 import io.primeaspect.csvparser.model.Data;
+import io.primeaspect.csvparser.model.DataRequest;
 import io.primeaspect.csvparser.service.DataService;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
@@ -33,16 +35,18 @@ public class ControllerTest {
     @Autowired
     private MockMvc mvc;
 
+    private ObjectMapper objectMapper = new ObjectMapper();
+
     @MockBean
     private DataService service;
 
     @Test
     public void parseTest() throws Exception {
-        String request = "id;name;sex;\n" +
+        DataRequest request = new DataRequest("id;name;sex;\n" +
                 "0;ричард;м;\n" +
                 "1;жорж;м;\n" +
                 "2;мария;ж;\n" +
-                "3;пьер;м;";
+                "3;пьер;м;");
 
         List<Data> list = new ArrayList<>();
         list.add(new Data("id", "0;1;2;3;"));
@@ -50,10 +54,10 @@ public class ControllerTest {
         list.add(new Data("sex", "м;ж;"));
         DataListDto expected = new DataListDto(list);
 
-        when(service.parse(request)).thenReturn(expected);
+        when(service.parse(request.getContent())).thenReturn(expected);
         mvc.perform(post("/parse")
                 .contentType(MediaType.APPLICATION_JSON)
-                .content(request))
+                .content(objectMapper.writeValueAsString(request)))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.*").isArray())
                 .andExpect(jsonPath("$.list", hasSize(3)))
@@ -66,7 +70,7 @@ public class ControllerTest {
 
         ArgumentCaptor<String> argumentCaptor = ArgumentCaptor.forClass(String.class);
         verify(service).parse(argumentCaptor.capture());
-        Assertions.assertEquals(request, argumentCaptor.getValue());
+        Assertions.assertEquals(request.getContent(), argumentCaptor.getValue());
     }
 
     @Test
