@@ -1,4 +1,4 @@
-package io.primeaspect.csvparser.test.base;
+package io.primeaspect.csvparser.test.service;
 
 import io.primeaspect.csvparser.dto.DataListDto;
 import io.primeaspect.csvparser.model.Data;
@@ -6,6 +6,8 @@ import io.primeaspect.csvparser.repository.DataRepository;
 import io.primeaspect.csvparser.service.DataService;
 import io.primeaspect.csvparser.service.ParserService;
 import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
+import org.mockito.Mockito;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -16,17 +18,12 @@ import java.util.stream.Collectors;
 
 import static org.mockito.Mockito.when;
 
-public class DataServiceBaseTest {
-    private final ParserService parser;
-    private final DataRepository repository;
-    private final DataService service;
+public class DataServiceTest {
+    private ParserService parser = Mockito.mock(ParserService.class);
+    private DataRepository repository = Mockito.mock(DataRepository.class);
+    private DataService service = new DataService(parser, repository);
 
-    public DataServiceBaseTest(ParserService parser, DataRepository repository, DataService service) {
-        this.parser = parser;
-        this.repository = repository;
-        this.service = service;
-    }
-
+    @Test
     public void parseTest() throws IOException {
         String request = "id;name;sex;\n" +
                 "0;ричард;м;\n" +
@@ -50,6 +47,7 @@ public class DataServiceBaseTest {
         Assertions.assertEquals(response, new DataListDto(expectedList));
     }
 
+    @Test
     public void getTest() throws IOException {
         Data requestData = new Data("path", "/hello/уточка;/hello/лошадка;/hello/собачка;");
         List<Data> request = new ArrayList<>();

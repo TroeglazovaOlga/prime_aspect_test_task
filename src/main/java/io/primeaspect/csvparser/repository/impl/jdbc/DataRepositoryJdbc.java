@@ -65,7 +65,7 @@ public class DataRepositoryJdbc implements DataRepository {
 
     @Override
     public void deleteAll() {
-        jdbcTemplate.update("delete from results");
+        jdbcTemplate.update("delete from data");
     }
 
 }
