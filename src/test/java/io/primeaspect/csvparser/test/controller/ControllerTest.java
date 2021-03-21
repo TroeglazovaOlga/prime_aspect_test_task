@@ -75,15 +75,17 @@ public class ControllerTest {
 
     @Test
     public void getTest() throws Exception {
-        when(service.get("id")).thenReturn(new Data("id", "0;1;2;3;"));
+        List<Data> list = new ArrayList<>();
+        list.add(new Data("id", "0;1;2;3;"));
+        when(service.getByName("id")).thenReturn(list);
         mvc.perform(get("/data/{name}", "id")
                 .accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$.name", is("id")))
-                .andExpect(jsonPath("$.content", is("0;1;2;3;")));
+                .andExpect(jsonPath("$[0].name", is("id")))
+                .andExpect(jsonPath("$[0].content", is("0;1;2;3;")));
 
         ArgumentCaptor<String> argumentCaptor = ArgumentCaptor.forClass(String.class);
-        verify(service).get(argumentCaptor.capture());
+        verify(service).getByName(argumentCaptor.capture());
         Assertions.assertEquals("id", argumentCaptor.getValue());
     }
 }

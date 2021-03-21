@@ -10,7 +10,7 @@ import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.util.List;
 
-@Repository("JDBC")
+@Repository
 public class DataRepositoryJdbc implements DataRepository {
     private JdbcTemplate jdbcTemplate;
 
@@ -37,15 +37,15 @@ public class DataRepositoryJdbc implements DataRepository {
     }
 
     @Override
-    public Data get(String name) {
+    public List<Data> getByName(String name) {
         String selectSql = "select * from data where name = ?";
-        return jdbcTemplate.queryForObject(
+        return jdbcTemplate.query(
                 selectSql,
                 new Object[]{name},
-                (result, rowNum) ->
+                (rs, rowNum) ->
                         new Data(
-                                result.getString("name"),
-                                result.getString("content")
+                                rs.getString("name"),
+                                rs.getString("content")
                         )
         );
     }

@@ -29,8 +29,8 @@ public class DataService {
         return new DataListDto(resultList);
     }
 
-    public Data get(String name) throws IOException {
-        return repository.get(name);
+    public List<Data> getByName(String name) throws IOException {
+        return repository.getByName(name);
     }
 
     public DataListDto getAll() throws IOException {

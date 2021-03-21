@@ -23,7 +23,7 @@ public interface DataMapper {
     void createData(List<Data> dataList);
 
     @Select("SELECT id, name, content FROM data WHERE name = #{name}")
-    Data get(@Param("name") String name);
+    List<Data> getByName(@Param("name") String name);
 
     @Select("SELECT id, name, content FROM data")
     List<Data> getAll();

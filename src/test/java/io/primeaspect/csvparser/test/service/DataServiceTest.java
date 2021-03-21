@@ -50,13 +50,13 @@ public class DataServiceTest {
     @Test
     public void getTest() throws IOException {
         Data requestData = new Data("path", "/hello/уточка;/hello/лошадка;/hello/собачка;");
-        List<Data> request = new ArrayList<>();
-        request.add(requestData);
-        repository.save(request);
+        List<Data> requestList = new ArrayList<>();
+        requestList.add(requestData);
+        repository.save(requestList);
 
-        when(repository.get(requestData.getName())).thenReturn(requestData);
+        when(repository.getByName(requestData.getName())).thenReturn(requestList);
 
-        Data response = service.get(requestData.getName());
-        Assertions.assertEquals(response, requestData);
+        List<Data> response = service.getByName(requestData.getName());
+        Assertions.assertEquals(response, requestList);
     }
 }

@@ -2,7 +2,8 @@ package io.primeaspect.csvparser.test.repository;
 
 import io.primeaspect.csvparser.model.Data;
 import io.primeaspect.csvparser.repository.DataRepository;
-import io.primeaspect.csvparser.repository.impl.jdbc.DataRepositoryJdbc;
+import io.primeaspect.csvparser.repository.impl.hibernate.CustomCrudRepository;
+import io.primeaspect.csvparser.repository.impl.hibernate.DataRepositoryHibernate;
 import io.primeaspect.csvparser.test.TestConfiguration;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Assertions;
@@ -11,16 +12,17 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.context.annotation.ComponentScan;
+import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 
 import java.util.ArrayList;
 import java.util.List;
 
-@SpringBootTest(classes = {TestConfiguration.class, DataRepositoryJdbc.class})
+@SpringBootTest(classes = {TestConfiguration.class, DataRepositoryHibernate.class})
 @ComponentScan(basePackages = "io.primeaspect.csvparser")
-public class DataRepositoryJdbcTest {
-
+@EnableJpaRepositories(basePackageClasses = CustomCrudRepository.class)
+public class DataRepositoryHibernateTest {
     @Autowired
-    @Qualifier("dataRepositoryJdbc")
+    @Qualifier("dataRepositoryHibernate")
     private DataRepository repository;
 
     @AfterEach

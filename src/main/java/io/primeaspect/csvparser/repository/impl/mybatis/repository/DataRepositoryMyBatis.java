@@ -1,15 +1,13 @@
 package io.primeaspect.csvparser.repository.impl.mybatis.repository;
 
 import io.primeaspect.csvparser.model.Data;
-import io.primeaspect.csvparser.repository.impl.mybatis.mapper.DataMapper;
 import io.primeaspect.csvparser.repository.DataRepository;
-import org.springframework.context.annotation.Primary;
+import io.primeaspect.csvparser.repository.impl.mybatis.mapper.DataMapper;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
 
-@Primary
-@Repository("myBatis")
+@Repository
 public class DataRepositoryMyBatis implements DataRepository {
     private final DataMapper mapper;
 
@@ -23,8 +21,8 @@ public class DataRepositoryMyBatis implements DataRepository {
     }
 
     @Override
-    public Data get(String name) {
-        return mapper.get(name);
+    public List<Data> getByName(String name) {
+        return mapper.getByName(name);
     }
 
     @Override
