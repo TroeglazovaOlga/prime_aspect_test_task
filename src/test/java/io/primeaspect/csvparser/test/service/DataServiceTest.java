@@ -19,9 +19,9 @@ import java.util.stream.Collectors;
 import static org.mockito.Mockito.when;
 
 public class DataServiceTest {
-    private ParserService parser = Mockito.mock(ParserService.class);
-    private DataRepository repository = Mockito.mock(DataRepository.class);
-    private DataService service = new DataService(parser, repository);
+    private final ParserService parser = Mockito.mock(ParserService.class);
+    private final DataRepository repository = Mockito.mock(DataRepository.class);
+    private final DataService service = new DataService(parser, repository);
 
     @Test
     public void parseTest() throws IOException {
@@ -48,15 +48,15 @@ public class DataServiceTest {
     }
 
     @Test
-    public void getTest() throws IOException {
+    public void findAllByNameTest() throws IOException {
         Data requestData = new Data("path", "/hello/уточка;/hello/лошадка;/hello/собачка;");
         List<Data> requestList = new ArrayList<>();
         requestList.add(requestData);
-        repository.save(requestList);
+        repository.saveAll(requestList);
 
-        when(repository.getByName(requestData.getName())).thenReturn(requestList);
+        when(repository.findAllByName(requestData.getName())).thenReturn(requestList);
 
-        List<Data> response = service.getByName(requestData.getName());
+        List<Data> response = service.findAllByName(requestData.getName());
         Assertions.assertEquals(response, requestList);
     }
 }

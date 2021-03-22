@@ -9,7 +9,7 @@ import java.util.LinkedHashMap;
 import java.util.Map;
 
 public class ParserServiceTest {
-    private static ParserService parser = new ParserService();
+    private final ParserService parser = new ParserService();
 
     @Test
     public void parseTest() throws IOException {

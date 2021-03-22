@@ -17,18 +17,23 @@ public class DataRepositoryHibernate implements DataRepository {
     }
 
     @Override
-    public void save(List<Data> data) {
+    public void saveAll(List<Data> data) {
         repository.saveAll(data);
     }
 
     @Override
-    public List<Data> getByName(String name) {
+    public List<Data> findAllByName(String name) {
         return repository.findAllByName(name);
     }
 
     @Override
-    public List<Data> getAll() {
+    public List<Data> findAll() {
         return (List<Data>) repository.findAll();
+    }
+
+    @Override
+    public int count() {
+        return (int) repository.count();
     }
 
     @Override

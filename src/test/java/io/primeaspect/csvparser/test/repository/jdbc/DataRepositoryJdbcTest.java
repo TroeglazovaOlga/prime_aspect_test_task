@@ -1,4 +1,4 @@
-package io.primeaspect.csvparser.test.repository;
+package io.primeaspect.csvparser.test.repository.jdbc;
 
 import io.primeaspect.csvparser.model.Data;
 import io.primeaspect.csvparser.repository.DataRepository;
@@ -29,25 +29,51 @@ public class DataRepositoryJdbcTest {
     }
 
     @Test
-    public void saveTest() {
+    public void saveAllTest() {
         List<Data> requestList = new java.util.ArrayList<>();
         requestList.add(new Data("id", "0;1;2;3;"));
         requestList.add(new Data("name", "ричард;жорж;мария;пьер;"));
         requestList.add(new Data("sex", "м;ж;"));
 
-        repository.save(requestList);
-        List<Data> responseList = repository.getAll();
+        repository.saveAll(requestList);
+        List<Data> responseList = repository.findAll();
         Assertions.assertEquals(requestList, responseList);
     }
 
     @Test
-    public void getTest() {
+    public void findAllByNameTest() {
         Data requestData = new Data("path", "/hello/уточка;/hello/лошадка;/hello/собачка;");
         List<Data> requestList = new ArrayList<>();
         requestList.add(requestData);
 
-        repository.save(requestList);
-        List<Data> response = repository.getByName(requestData.getName());
+        repository.saveAll(requestList);
+        List<Data> response = repository.findAllByName(requestData.getName());
         Assertions.assertEquals(requestList, response);
+    }
+
+    @Test
+    public void findAllTest() {
+        List<Data> requestList = new java.util.ArrayList<>();
+        requestList.add(new Data("id", "0;1;2;3;"));
+        requestList.add(new Data("name", "ричард;жорж;мария;пьер;"));
+        requestList.add(new Data("sex", "м;ж;"));
+        repository.saveAll(requestList);
+
+        List<Data> response = repository.findAll();
+        Assertions.assertEquals(requestList, response);
+        Assertions.assertEquals(requestList.size(), repository.count());
+    }
+
+    @Test
+    public void deleteAll() {
+        List<Data> requestList = new java.util.ArrayList<>();
+        requestList.add(new Data("id", "0;1;2;3;"));
+        requestList.add(new Data("name", "ричард;жорж;мария;пьер;"));
+        requestList.add(new Data("sex", "м;ж;"));
+        repository.saveAll(requestList);
+
+        repository.deleteAll();
+        int countAfterDelete = repository.count();
+        Assertions.assertEquals(countAfterDelete, 0);
     }
 }

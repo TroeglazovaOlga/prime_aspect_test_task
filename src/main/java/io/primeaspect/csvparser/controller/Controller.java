@@ -24,12 +24,12 @@ public class Controller {
     }
 
     @GetMapping("/data/{name}")
-    public List<Data> getByName(@PathVariable @NotNull String name) throws IOException {
-        return service.getByName(name);
+    public List<Data> findAllByName(@PathVariable @NotNull String name) throws IOException {
+        return service.findAllByName(name);
     }
 
     @GetMapping("/data")
-    public DataListDto getAll() throws IOException {
-        return service.getAll();
+    public DataListDto findAll() throws IOException {
+        return service.findAll();
     }
 }

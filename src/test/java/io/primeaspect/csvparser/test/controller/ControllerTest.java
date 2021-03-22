@@ -32,10 +32,11 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @ExtendWith(SpringExtension.class)
 @WebMvcTest(controllers = Controller.class)
 public class ControllerTest {
+
     @Autowired
     private MockMvc mvc;
 
-    private ObjectMapper objectMapper = new ObjectMapper();
+    private final ObjectMapper objectMapper = new ObjectMapper();
 
     @MockBean
     private DataService service;
@@ -74,10 +75,10 @@ public class ControllerTest {
     }
 
     @Test
-    public void getTest() throws Exception {
+    public void findAllByNameTest() throws Exception {
         List<Data> list = new ArrayList<>();
         list.add(new Data("id", "0;1;2;3;"));
-        when(service.getByName("id")).thenReturn(list);
+        when(service.findAllByName("id")).thenReturn(list);
         mvc.perform(get("/data/{name}", "id")
                 .accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
@@ -85,7 +86,7 @@ public class ControllerTest {
                 .andExpect(jsonPath("$[0].content", is("0;1;2;3;")));
 
         ArgumentCaptor<String> argumentCaptor = ArgumentCaptor.forClass(String.class);
-        verify(service).getByName(argumentCaptor.capture());
+        verify(service).findAllByName(argumentCaptor.capture());
         Assertions.assertEquals("id", argumentCaptor.getValue());
     }
 }

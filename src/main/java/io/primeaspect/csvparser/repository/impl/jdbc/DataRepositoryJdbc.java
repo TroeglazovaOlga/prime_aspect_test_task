@@ -12,14 +12,14 @@ import java.util.List;
 
 @Repository
 public class DataRepositoryJdbc implements DataRepository {
-    private JdbcTemplate jdbcTemplate;
+    private final JdbcTemplate jdbcTemplate;
 
     public DataRepositoryJdbc(JdbcTemplate jdbcTemplate) {
         this.jdbcTemplate = jdbcTemplate;
     }
 
     @Override
-    public void save(List<Data> data) {
+    public void saveAll(List<Data> data) {
         String updateSql = "insert into data (name, content) values(?,?)";
         jdbcTemplate.batchUpdate(
                 updateSql,
@@ -37,7 +37,7 @@ public class DataRepositoryJdbc implements DataRepository {
     }
 
     @Override
-    public List<Data> getByName(String name) {
+    public List<Data> findAllByName(String name) {
         String selectSql = "select * from data where name = ?";
         return jdbcTemplate.query(
                 selectSql,
@@ -51,7 +51,7 @@ public class DataRepositoryJdbc implements DataRepository {
     }
 
     @Override
-    public List<Data> getAll() {
+    public List<Data> findAll() {
         String selectSql = "select * from data";
         return jdbcTemplate.query(
                 selectSql,
@@ -61,6 +61,12 @@ public class DataRepositoryJdbc implements DataRepository {
                                 result.getString("content")
                         )
         );
+    }
+
+    @Override
+    public int count() {
+        String selectSql = "select count (*) from data";
+        return jdbcTemplate.queryForObject(selectSql, Integer.class);
     }
 
     @Override
