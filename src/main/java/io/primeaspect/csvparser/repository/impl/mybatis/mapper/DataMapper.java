@@ -23,10 +23,13 @@ public interface DataMapper {
     void createData(List<Data> dataList);
 
     @Select("SELECT id, name, content FROM data WHERE name = #{name}")
-    Data get(@Param("name") String name);
+    List<Data> findAllByName(@Param("name") String name);
 
     @Select("SELECT id, name, content FROM data")
-    List<Data> getAll();
+    List<Data> findAll();
+
+    @Select("select count(*) from data")
+    Integer count();
 
     @Delete("delete from data")
     void deleteAll();
