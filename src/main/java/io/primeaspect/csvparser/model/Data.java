@@ -1,10 +1,21 @@
 package io.primeaspect.csvparser.model;
 
+import javax.persistence.*;
+
+import java.io.Serializable;
 import java.util.Objects;
 
-public class Data {
+@Entity
+@Table(name="data")
+public class Data implements Serializable {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private long id;
     private String name;
     private String content;
+
+    public Data() {
+    }
 
     public Data(String name, String content) {
         this.name = name;

@@ -1,7 +1,7 @@
 package io.primeaspect.csvparser.service;
 
 import io.primeaspect.csvparser.dto.DataListDto;
-import io.primeaspect.csvparser.jdbc.repository.DataRepository;
+import io.primeaspect.csvparser.repository.DataRepository;
 import io.primeaspect.csvparser.model.Data;
 import org.springframework.stereotype.Service;
 
@@ -11,8 +11,8 @@ import java.util.stream.Collectors;
 
 @Service
 public class DataService {
-    private ParserService parser;
-    private DataRepository repository;
+    private final ParserService parser;
+    private final DataRepository repository;
 
     public DataService(ParserService parser, DataRepository repository) {
         this.parser = parser;
@@ -25,15 +25,15 @@ public class DataService {
                 .stream()
                 .map(set -> new Data(set.getKey(), set.getValue()))
                 .collect(Collectors.toList());
-        repository.save(resultList);
+        repository.saveAll(resultList);
         return new DataListDto(resultList);
     }
 
-    public Data get(String name) throws IOException {
-        return repository.get(name);
+    public List<Data> findAllByName(String name) throws IOException {
+        return repository.findAllByName(name);
     }
 
-    public DataListDto getAll() throws IOException {
-        return new DataListDto(repository.getAll());
+    public DataListDto findAll() throws IOException {
+        return new DataListDto(repository.findAll());
     }
 }

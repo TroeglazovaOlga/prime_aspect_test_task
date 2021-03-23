@@ -1,8 +1,8 @@
-package io.primeaspect.csvparser.test;
+package io.primeaspect.csvparser.test.service;
 
 import io.primeaspect.csvparser.dto.DataListDto;
-import io.primeaspect.csvparser.jdbc.repository.DataRepository;
 import io.primeaspect.csvparser.model.Data;
+import io.primeaspect.csvparser.repository.DataRepository;
 import io.primeaspect.csvparser.service.DataService;
 import io.primeaspect.csvparser.service.ParserService;
 import org.junit.jupiter.api.Assertions;
@@ -19,9 +19,9 @@ import java.util.stream.Collectors;
 import static org.mockito.Mockito.when;
 
 public class DataServiceTest {
-    private ParserService parser = Mockito.mock(ParserService.class);
-    private DataRepository repository = Mockito.mock(DataRepository.class);
-    private DataService service = new DataService(parser, repository);
+    private final ParserService parser = Mockito.mock(ParserService.class);
+    private final DataRepository repository = Mockito.mock(DataRepository.class);
+    private final DataService service = new DataService(parser, repository);
 
     @Test
     public void parseTest() throws IOException {
@@ -48,15 +48,15 @@ public class DataServiceTest {
     }
 
     @Test
-    public void getTest() throws IOException {
+    public void findAllByNameTest() throws IOException {
         Data requestData = new Data("path", "/hello/уточка;/hello/лошадка;/hello/собачка;");
-        List<Data> request = new ArrayList<>();
-        request.add(requestData);
-        repository.save(request);
+        List<Data> requestList = new ArrayList<>();
+        requestList.add(requestData);
+        repository.saveAll(requestList);
 
-        when(repository.get(requestData.getName())).thenReturn(requestData);
+        when(repository.findAllByName(requestData.getName())).thenReturn(requestList);
 
-        Data response = service.get(requestData.getName());
-        Assertions.assertEquals(response, requestData);
+        List<Data> response = service.findAllByName(requestData.getName());
+        Assertions.assertEquals(response, requestList);
     }
 }

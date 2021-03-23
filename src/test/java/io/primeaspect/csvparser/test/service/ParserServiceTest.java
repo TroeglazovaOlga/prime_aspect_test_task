@@ -1,4 +1,4 @@
-package io.primeaspect.csvparser.test;
+package io.primeaspect.csvparser.test.service;
 
 import io.primeaspect.csvparser.service.ParserService;
 import org.junit.jupiter.api.Assertions;
@@ -9,7 +9,7 @@ import java.util.LinkedHashMap;
 import java.util.Map;
 
 public class ParserServiceTest {
-    private static ParserService parser = new ParserService();
+    private final ParserService parser = new ParserService();
 
     @Test
     public void parseTest() throws IOException {
