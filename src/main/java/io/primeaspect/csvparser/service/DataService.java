@@ -1,8 +1,10 @@
 package io.primeaspect.csvparser.service;
 
-import io.primeaspect.csvparser.dto.DataListDto;
-import io.primeaspect.csvparser.repository.DataRepository;
+import io.primeaspect.csvparser.dto.request.DataByUserRequest;
+import io.primeaspect.csvparser.dto.request.DataRequest;
+import io.primeaspect.csvparser.dto.response.DataListResponse;
 import io.primeaspect.csvparser.model.Data;
+import io.primeaspect.csvparser.repository.DataRepository;
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;
@@ -19,21 +21,37 @@ public class DataService {
         this.repository = repository;
     }
 
-    public DataListDto parse(String request) throws IOException {
-        List<Data> resultList = parser.parse(request)
+    public DataListResponse create(DataRequest request) throws IOException {
+        List<Data> resultList = parser.parse(request.getContent())
                 .entrySet()
                 .stream()
                 .map(set -> new Data(set.getKey(), set.getValue()))
                 .collect(Collectors.toList());
         repository.saveAll(resultList);
-        return new DataListDto(resultList);
+        return new DataListResponse(resultList);
+    }
+
+    public DataListResponse createByUser(DataByUserRequest request) throws IOException {
+        List<Data> resultList = parser.parse(request.getContent())
+                .entrySet()
+                .stream()
+                .map(set -> new Data(set.getKey(), set.getValue()))
+                .collect(Collectors.toList());
+        resultList.forEach(result -> result.setUser(request.getUser()));
+
+        repository.saveAll(resultList);
+        return new DataListResponse(resultList);
     }
 
     public List<Data> findAllByName(String name) throws IOException {
         return repository.findAllByName(name);
     }
 
-    public DataListDto findAll() throws IOException {
-        return new DataListDto(repository.findAll());
+    public List<Data> findAllByUserName(String name) {
+        return repository.findAllByUserName(name);
+    }
+
+    public DataListResponse findAll() throws IOException {
+        return new DataListResponse(repository.findAll());
     }
 }

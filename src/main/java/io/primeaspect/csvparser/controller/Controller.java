@@ -1,8 +1,9 @@
 package io.primeaspect.csvparser.controller;
 
-import io.primeaspect.csvparser.dto.DataListDto;
+import io.primeaspect.csvparser.dto.request.DataByUserRequest;
+import io.primeaspect.csvparser.dto.response.DataListResponse;
 import io.primeaspect.csvparser.model.Data;
-import io.primeaspect.csvparser.model.DataRequest;
+import io.primeaspect.csvparser.dto.request.DataRequest;
 import io.primeaspect.csvparser.service.DataService;
 import org.springframework.web.bind.annotation.*;
 
@@ -18,9 +19,14 @@ public class Controller {
         this.service = service;
     }
 
-    @PostMapping("/parse")
-    public DataListDto parse(@RequestBody DataRequest body) throws IOException {
-        return service.parse(body.getContent());
+    @PostMapping("/create")
+    public DataListResponse create(@RequestBody DataRequest body) throws IOException {
+        return service.create(body);
+    }
+
+    @PostMapping("/create/user")
+    public DataListResponse createByUser(@RequestBody DataByUserRequest body) throws IOException {
+        return service.createByUser(body);
     }
 
     @GetMapping("/data/{name}")
@@ -28,8 +34,13 @@ public class Controller {
         return service.findAllByName(name);
     }
 
+    @GetMapping("/data/user/{name}")
+    public List<Data> findAllByUserName(@PathVariable @NotNull String name) {
+        return service.findAllByUserName(name);
+    }
+
     @GetMapping("/data")
-    public DataListDto findAll() throws IOException {
+    public DataListResponse findAll() throws IOException {
         return service.findAll();
     }
 }

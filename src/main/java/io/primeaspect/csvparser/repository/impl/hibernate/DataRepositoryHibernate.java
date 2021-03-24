@@ -10,9 +10,9 @@ import java.util.List;
 @Primary
 @Repository
 public class DataRepositoryHibernate implements DataRepository {
-    private final CustomCrudRepository repository;
+    private final DataCrudRepository repository;
 
-    public DataRepositoryHibernate(CustomCrudRepository repository) {
+    public DataRepositoryHibernate(DataCrudRepository repository) {
         this.repository = repository;
     }
 
@@ -22,8 +22,18 @@ public class DataRepositoryHibernate implements DataRepository {
     }
 
     @Override
+    public void saveAllByUser(List<Data> data) {
+        repository.saveAll(data);
+    }
+
+    @Override
     public List<Data> findAllByName(String name) {
         return repository.findAllByName(name);
+    }
+
+    @Override
+    public List<Data> findAllByUserName(String name) {
+        return repository.findAllByUserName(name);
     }
 
     @Override

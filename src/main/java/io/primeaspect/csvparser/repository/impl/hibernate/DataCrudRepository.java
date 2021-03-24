@@ -7,6 +7,7 @@ import org.springframework.stereotype.Repository;
 import java.util.List;
 
 @Repository
-public interface CustomCrudRepository extends CrudRepository<Data, Long> {
+public interface DataCrudRepository extends CrudRepository<Data, Long> {
     List<Data> findAllByName(String name);
+    List<Data> findAllByUserName(String name);
 }

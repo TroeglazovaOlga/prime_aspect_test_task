@@ -37,6 +37,11 @@ public class DataRepositoryJdbc implements DataRepository {
     }
 
     @Override
+    public void saveAllByUser(List<Data> data) {
+
+    }
+
+    @Override
     public List<Data> findAllByName(String name) {
         String selectSql = "select * from data where name = ?";
         return jdbcTemplate.query(
@@ -48,6 +53,11 @@ public class DataRepositoryJdbc implements DataRepository {
                                 rs.getString("content")
                         )
         );
+    }
+
+    @Override
+    public List<Data> findAllByUserName(String name) {
+        return null;
     }
 
     @Override

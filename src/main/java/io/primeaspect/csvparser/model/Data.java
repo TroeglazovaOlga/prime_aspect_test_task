@@ -14,12 +14,37 @@ public class Data implements Serializable {
     private String name;
     private String content;
 
-    public Data() {
-    }
+    @ManyToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "user_id")
+    private User user;
+
+    public Data() {}
 
     public Data(String name, String content) {
         this.name = name;
         this.content = content;
+    }
+
+    public Data(String name, String content, User user) {
+        this.name = name;
+        this.content = content;
+        this.user = user;
+    }
+
+    public long getId() {
+        return id;
+    }
+
+    public void setId(long id) {
+        this.id = id;
+    }
+
+    public User getUser() {
+        return user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
     }
 
     public String getName() {
@@ -43,19 +68,21 @@ public class Data implements Serializable {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Data data = (Data) o;
-        return Objects.equals(name, data.name) && Objects.equals(content, data.content);
+        return Objects.equals(name, data.name) && Objects.equals(content, data.content) && Objects.equals(user, data.user);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(name, content);
+        return Objects.hash(name, content, user);
     }
 
     @Override
     public String toString() {
         return "Data{" +
-                "name='" + name + '\'' +
+                "id=" + id +
+                ", name='" + name + '\'' +
                 ", content='" + content + '\'' +
+                ", user=" + user +
                 '}';
     }
 }

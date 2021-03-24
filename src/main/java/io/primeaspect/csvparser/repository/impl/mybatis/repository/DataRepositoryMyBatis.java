@@ -21,8 +21,18 @@ public class DataRepositoryMyBatis implements DataRepository {
     }
 
     @Override
+    public void saveAllByUser(List<Data> data) {
+
+    }
+
+    @Override
     public List<Data> findAllByName(String name) {
         return mapper.findAllByName(name);
+    }
+
+    @Override
+    public List<Data> findAllByUserName(String name) {
+        return null;
     }
 
     @Override
