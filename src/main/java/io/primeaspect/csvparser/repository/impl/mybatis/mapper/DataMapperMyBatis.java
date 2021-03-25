@@ -32,7 +32,7 @@ public interface DataMapperMyBatis {
     @Delete("DELETE FROM data WHERE name = #{name}")
     void deleteByName(String name);
 
-    @Delete("delete from data where user_id = (select id from users where name = #{name})")
+    @Delete("DELETE FROM data WHERE user_id = (SELECT id FROM users WHERE name = #{name})")
     void deleteByUserName(String name);
 
     @Delete("DELETE FROM data")
