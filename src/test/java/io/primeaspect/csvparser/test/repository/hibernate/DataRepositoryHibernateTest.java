@@ -47,6 +47,7 @@ public class DataRepositoryHibernateTest {
         Data requestData = new Data("path", "/hello/уточка;/hello/лошадка;/hello/собачка;", user);
         List<Data> requestList = new ArrayList<>();
         requestList.add(requestData);
+        user.setData(requestList);
 
         repository.saveAll(requestList);
         List<Data> response = repository.findAllByName(requestData.getName());
@@ -116,7 +117,7 @@ public class DataRepositoryHibernateTest {
         String request = "user1";
 
         repository.deleteAllByUserName(request);
-        List<Data> resultList = repository.findAllByUserName(request);
+        List<Data> resultList = repository.findAllByName(request);
         Assertions.assertTrue(resultList.isEmpty());
     }
 
