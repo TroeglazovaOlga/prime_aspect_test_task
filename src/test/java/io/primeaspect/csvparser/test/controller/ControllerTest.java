@@ -8,7 +8,6 @@ import io.primeaspect.csvparser.model.Data;
 import io.primeaspect.csvparser.model.User;
 import io.primeaspect.csvparser.service.DataService;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.mockito.ArgumentCaptor;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -126,7 +125,7 @@ public class ControllerTest {
                 .andExpect(jsonPath("$.list[2].content", is("м;ж;")));
     }
 
-    @Disabled
+    @Test
     public void deleteAllByNameTest() throws Exception {
         mvc.perform(delete("/data/{name}", "id"))
                 .andExpect(status().isOk());
