@@ -39,7 +39,6 @@ public class DataRepositoryHibernateUnitTest {
         User user = new User("user");
         List<Data> requestList = new ArrayList<>();
         requestList.add(new Data("id", "0;1;2;3;", user));
-        repository.saveAll(requestList);
         String request = "id";
 
         when(crudRepository.findAllByName(request)).thenReturn(requestList);
@@ -52,12 +51,6 @@ public class DataRepositoryHibernateUnitTest {
     @Test
     public void findAllByUserNameTest() {
         User user1 = new User("user1");
-        User user2 = new User("user2");
-
-        List<Data> requestList = new ArrayList<>();
-        requestList.add(new Data("id", "0;1;2;3;", user1));
-        requestList.add(new Data("name", "ричард;жорж;мария;пьер;", user2));
-        repository.saveAll(requestList);
         String request = user1.getName();
 
         List<Data> expectedList = new ArrayList<>();
