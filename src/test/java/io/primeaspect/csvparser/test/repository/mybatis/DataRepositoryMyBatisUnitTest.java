@@ -10,9 +10,7 @@ import org.mockito.Mockito;
 
 import java.util.List;
 
-import static org.mockito.Mockito.eq;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.*;
 
 public class DataRepositoryMyBatisUnitTest {
     private final DataMapper mapper = Mockito.mock(DataMapper.class);

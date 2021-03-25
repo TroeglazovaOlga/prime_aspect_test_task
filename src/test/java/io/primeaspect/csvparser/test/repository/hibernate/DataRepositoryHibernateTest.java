@@ -2,7 +2,6 @@ package io.primeaspect.csvparser.test.repository.hibernate;
 
 import io.primeaspect.csvparser.model.Data;
 import io.primeaspect.csvparser.model.User;
-import io.primeaspect.csvparser.repository.DataRepository;
 import io.primeaspect.csvparser.repository.impl.hibernate.DataCrudRepository;
 import io.primeaspect.csvparser.repository.impl.hibernate.DataRepositoryHibernate;
 import io.primeaspect.csvparser.test.TestConfiguration;
@@ -10,7 +9,6 @@ import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
@@ -22,10 +20,8 @@ import java.util.List;
 @ComponentScan(basePackages = "io.primeaspect.csvparser")
 @EnableJpaRepositories(basePackageClasses = DataCrudRepository.class)
 public class DataRepositoryHibernateTest {
-
     @Autowired
-    @Qualifier("dataRepositoryHibernate")
-    private DataRepository repository;
+    private DataRepositoryHibernate repository;
 
     @AfterEach
     public void cleanup() {
@@ -34,25 +30,13 @@ public class DataRepositoryHibernateTest {
 
     @Test
     public void saveAllTest() {
-        List<Data> requestList = new java.util.ArrayList<>();
-        requestList.add(new Data("id", "0;1;2;3;"));
-        requestList.add(new Data("name", "ричард;жорж;мария;пьер;"));
-        requestList.add(new Data("sex", "м;ж;"));
-
-        repository.saveAll(requestList);
-        List<Data> responseList = repository.findAll();
-        Assertions.assertEquals(requestList, responseList);
-    }
-
-    @Test
-    public void saveAllByUserTest() {
         User user = new User("user");
         List<Data> requestList = new java.util.ArrayList<>();
         requestList.add(new Data("id", "0;1;2;3;", user));
         requestList.add(new Data("name", "ричард;жорж;мария;пьер;", user));
         requestList.add(new Data("sex", "м;ж;", user));
 
-        repository.saveAllByUser(requestList);
+        repository.saveAll(requestList);
         List<Data> responseList = repository.findAll();
         Assertions.assertEquals(requestList, responseList);
     }
@@ -96,7 +80,40 @@ public class DataRepositoryHibernateTest {
 
         List<Data> response = repository.findAll();
         Assertions.assertEquals(requestList, response);
-        Assertions.assertEquals(requestList.size(), repository.count());
+    }
+
+    @Test
+    public void deleteAllByName() {
+        User user1 = new User("user1");
+        User user2 = new User("user2");
+
+        List<Data> requestList = new ArrayList<>();
+        requestList.add(new Data("id", "0;1;2;3;", user1));
+        requestList.add(new Data("name", "ричард;жорж;мария;пьер;", user2));
+        repository.saveAll(requestList);
+
+        String request = "id";
+
+        repository.deleteAllByName(request);
+        List<Data> resultList = repository.findAllByName(request);
+        Assertions.assertTrue(resultList.isEmpty());
+    }
+
+    @Test
+    public void deleteAllByUserName() {
+        User user1 = new User("user1");
+        User user2 = new User("user2");
+
+        List<Data> requestList = new ArrayList<>();
+        requestList.add(new Data("id", "0;1;2;3;", user1));
+        requestList.add(new Data("name", "ричард;жорж;мария;пьер;", user2));
+        repository.saveAll(requestList);
+
+        String request = "user1";
+
+        repository.deleteAllByUserName(request);
+        List<Data> resultList = repository.findAllByName(request);
+        Assertions.assertTrue(resultList.isEmpty());
     }
 
     @Test
@@ -108,7 +125,7 @@ public class DataRepositoryHibernateTest {
         repository.saveAll(requestList);
 
         repository.deleteAll();
-        int countAfterDelete = repository.count();
-        Assertions.assertEquals(countAfterDelete, 0);
+        List<Data> resultList = repository.findAll();
+        Assertions.assertTrue(resultList.isEmpty());
     }
 }

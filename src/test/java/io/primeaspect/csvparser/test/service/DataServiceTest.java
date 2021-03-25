@@ -1,15 +1,15 @@
 package io.primeaspect.csvparser.test.service;
 
-import io.primeaspect.csvparser.dto.request.DataByUserRequest;
+import io.primeaspect.csvparser.dto.request.DataRequest;
 import io.primeaspect.csvparser.dto.response.DataListResponse;
 import io.primeaspect.csvparser.model.Data;
-import io.primeaspect.csvparser.dto.request.DataRequest;
 import io.primeaspect.csvparser.model.User;
 import io.primeaspect.csvparser.repository.DataRepository;
 import io.primeaspect.csvparser.service.DataService;
 import io.primeaspect.csvparser.service.ParserService;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
+import org.mockito.ArgumentCaptor;
 import org.mockito.Mockito;
 
 import java.io.IOException;
@@ -19,6 +19,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
+import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 public class DataServiceTest {
@@ -28,30 +29,6 @@ public class DataServiceTest {
 
     @Test
     public void createTest() throws IOException {
-        String request = "id;name;sex;\n" +
-                "0;ричард;м;\n" +
-                "1;жорж;м;\n" +
-                "2;мария;ж;\n" +
-                "3;пьер;м;";
-
-        Map<String, String> expectedMap = new LinkedHashMap<>();
-        expectedMap.put("id", "0;1;2;3;");
-        expectedMap.put("name", "ричард;жорж;мария;пьер;");
-        expectedMap.put("sex", "м;ж;");
-
-        List<Data> expectedList = expectedMap.entrySet()
-                .stream()
-                .map(set -> new Data(set.getKey(), set.getValue()))
-                .collect(Collectors.toList());
-
-        when(parser.parse(request)).thenReturn(expectedMap);
-
-        DataListResponse response = service.create(new DataRequest(request));
-        Assertions.assertEquals(response, new DataListResponse(expectedList));
-    }
-
-    @Test
-    public void createByUserTest() throws IOException {
         User user = new User("user");
         String request = "id;name;sex;\n" +
                 "0;ричард;м;\n" +
@@ -71,7 +48,7 @@ public class DataServiceTest {
 
         when(parser.parse(request)).thenReturn(expectedMap);
 
-        DataListResponse response = service.createByUser(new DataByUserRequest(user, request));
+        DataListResponse response = service.create(new DataRequest(user, request));
         Assertions.assertEquals(response, new DataListResponse(expectedList));
     }
 
@@ -84,8 +61,8 @@ public class DataServiceTest {
 
         when(repository.findAllByName(requestData.getName())).thenReturn(requestList);
 
-        List<Data> response = service.findAllByName(requestData.getName());
-        Assertions.assertEquals(response, requestList);
+        DataListResponse response = service.findAllByName(requestData.getName());
+        Assertions.assertEquals(response, new DataListResponse(requestList));
     }
 
     @Test
@@ -103,7 +80,40 @@ public class DataServiceTest {
         repository.saveAll(requestList);
 
         when(repository.findAllByUserName(user1.getName())).thenReturn(expectedList);
-        List<Data> responseList = service.findAllByUserName(user1.getName());
-        Assertions.assertEquals(responseList, expectedList);
+        DataListResponse responseList = service.findAllByUserName(user1.getName());
+        Assertions.assertEquals(responseList, new DataListResponse(expectedList));
+    }
+
+    @Test
+    public void findAllTest() throws IOException {
+        List<Data> list = new ArrayList<>();
+        list.add(new Data("id", "0;1;2;3;"));
+        list.add(new Data("name", "ричард;жорж;мария;пьер;"));
+        list.add(new Data("sex", "м;ж;"));
+
+        when(repository.findAll()).thenReturn(list);
+
+        DataListResponse responseList = service.findAll();
+        Assertions.assertEquals(responseList, new DataListResponse(list));
+    }
+
+    @Test
+    public void deleteAllByNameTest() {
+        service.deleteAllByName("id");
+        ArgumentCaptor<String> argumentCaptor = ArgumentCaptor.forClass(String.class);
+        verify(repository).deleteAllByName(argumentCaptor.capture());
+    }
+
+    @Test
+    public void deleteAllByUserNameTest() {
+        service.deleteAllByUserName("user");
+        ArgumentCaptor<String> argumentCaptor = ArgumentCaptor.forClass(String.class);
+        verify(repository).deleteAllByUserName(argumentCaptor.capture());
+    }
+
+    @Test
+    public void deleteAll() {
+        service.deleteAll();
+        verify(repository).deleteAll();
     }
 }

@@ -1,6 +1,5 @@
 package io.primeaspect.csvparser.service;
 
-import io.primeaspect.csvparser.dto.request.DataByUserRequest;
 import io.primeaspect.csvparser.dto.request.DataRequest;
 import io.primeaspect.csvparser.dto.response.DataListResponse;
 import io.primeaspect.csvparser.model.Data;
@@ -27,31 +26,33 @@ public class DataService {
                 .stream()
                 .map(set -> new Data(set.getKey(), set.getValue()))
                 .collect(Collectors.toList());
-        repository.saveAll(resultList);
-        return new DataListResponse(resultList);
-    }
-
-    public DataListResponse createByUser(DataByUserRequest request) throws IOException {
-        List<Data> resultList = parser.parse(request.getContent())
-                .entrySet()
-                .stream()
-                .map(set -> new Data(set.getKey(), set.getValue()))
-                .collect(Collectors.toList());
         resultList.forEach(result -> result.setUser(request.getUser()));
 
         repository.saveAll(resultList);
         return new DataListResponse(resultList);
     }
 
-    public List<Data> findAllByName(String name) throws IOException {
-        return repository.findAllByName(name);
+    public DataListResponse findAllByName(String name) throws IOException {
+        return new DataListResponse(repository.findAllByName(name));
     }
 
-    public List<Data> findAllByUserName(String name) {
-        return repository.findAllByUserName(name);
+    public DataListResponse findAllByUserName(String name) {
+        return new DataListResponse(repository.findAllByUserName(name));
     }
 
     public DataListResponse findAll() throws IOException {
         return new DataListResponse(repository.findAll());
+    }
+
+    public void deleteAllByName(String name) {
+        this.repository.deleteAllByName(name);
+    }
+
+    public void deleteAllByUserName(String name) {
+        this.repository.deleteAllByUserName(name);
+    }
+
+    public void deleteAll() {
+        this.repository.deleteAll();
     }
 }

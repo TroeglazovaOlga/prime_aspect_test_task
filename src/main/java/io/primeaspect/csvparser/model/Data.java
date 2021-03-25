@@ -13,7 +13,6 @@ public class Data implements Serializable {
     private long id;
     private String name;
     private String content;
-
     @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "user_id")
     private User user;
@@ -74,15 +73,5 @@ public class Data implements Serializable {
     @Override
     public int hashCode() {
         return Objects.hash(name, content, user);
-    }
-
-    @Override
-    public String toString() {
-        return "Data{" +
-                "id=" + id +
-                ", name='" + name + '\'' +
-                ", content='" + content + '\'' +
-                ", user=" + user +
-                '}';
     }
 }

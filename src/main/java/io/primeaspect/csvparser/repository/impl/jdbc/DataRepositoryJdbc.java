@@ -37,11 +37,6 @@ public class DataRepositoryJdbc implements DataRepository {
     }
 
     @Override
-    public void saveAllByUser(List<Data> data) {
-
-    }
-
-    @Override
     public List<Data> findAllByName(String name) {
         String selectSql = "select * from data where name = ?";
         return jdbcTemplate.query(
@@ -74,14 +69,16 @@ public class DataRepositoryJdbc implements DataRepository {
     }
 
     @Override
-    public int count() {
-        String selectSql = "select count (*) from data";
-        return jdbcTemplate.queryForObject(selectSql, Integer.class);
+    public void deleteAllByName(String name) {
+        jdbcTemplate.update("delete from data where name = '" + name + "'");
     }
+
+    @Override
+    public void deleteAllByUserName(String name) {}
+
 
     @Override
     public void deleteAll() {
         jdbcTemplate.update("delete from data");
     }
-
 }

@@ -1,4 +1,5 @@
 package io.primeaspect.csvparser.dto.response;
+
 import io.primeaspect.csvparser.model.Data;
 
 import java.util.List;
@@ -30,12 +31,5 @@ public class DataListResponse {
     @Override
     public int hashCode() {
         return Objects.hash(resultList);
-    }
-
-    @Override
-    public String toString() {
-        return "DataListResponse{" +
-                "resultList=" + resultList +
-                '}';
     }
 }

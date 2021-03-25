@@ -1,14 +1,12 @@
 package io.primeaspect.csvparser.test.repository.jdbc;
 
 import io.primeaspect.csvparser.model.Data;
-import io.primeaspect.csvparser.repository.DataRepository;
 import io.primeaspect.csvparser.repository.impl.jdbc.DataRepositoryJdbc;
 import io.primeaspect.csvparser.test.TestConfiguration;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.context.annotation.ComponentScan;
 
@@ -18,10 +16,8 @@ import java.util.List;
 @SpringBootTest(classes = {TestConfiguration.class, DataRepositoryJdbc.class})
 @ComponentScan(basePackages = "io.primeaspect.csvparser")
 public class DataRepositoryJdbcTest {
-
     @Autowired
-    @Qualifier("dataRepositoryJdbc")
-    private DataRepository repository;
+    private DataRepositoryJdbc repository;
 
     @AfterEach
     public void cleanup() {
@@ -61,7 +57,20 @@ public class DataRepositoryJdbcTest {
 
         List<Data> response = repository.findAll();
         Assertions.assertEquals(requestList, response);
-        Assertions.assertEquals(requestList.size(), repository.count());
+    }
+
+    @Test
+    public void deleteAllByName() {
+        List<Data> requestList = new ArrayList<>();
+        requestList.add(new Data("id", "0;1;2;3;"));
+        requestList.add(new Data("name", "ричард;жорж;мария;пьер;"));
+        repository.saveAll(requestList);
+
+        String request = "id";
+
+        repository.deleteAllByName(request);
+        List<Data> resultList = repository.findAllByName(request);
+        Assertions.assertTrue(resultList.isEmpty());
     }
 
     @Test
@@ -73,7 +82,7 @@ public class DataRepositoryJdbcTest {
         repository.saveAll(requestList);
 
         repository.deleteAll();
-        int countAfterDelete = repository.count();
-        Assertions.assertEquals(countAfterDelete, 0);
+        List<Data> resultList = repository.findAll();
+        Assertions.assertTrue(resultList.isEmpty());
     }
 }

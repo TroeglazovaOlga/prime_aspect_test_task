@@ -13,9 +13,7 @@ import org.mockito.Mockito;
 import java.util.ArrayList;
 import java.util.List;
 
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
-import static org.mockito.Mockito.eq;
+import static org.mockito.Mockito.*;
 
 public class DataRepositoryHibernateUnitTest {
     private final DataCrudRepository crudRepository = Mockito.mock(DataCrudRepository.class);
@@ -28,15 +26,6 @@ public class DataRepositoryHibernateUnitTest {
 
     @Test
     public void saveAllTest() {
-        List<Data> requestList = new java.util.ArrayList<>();
-        requestList.add(new Data("id", "0;1;2;3;"));
-
-        repository.saveAll(requestList);
-        verify(crudRepository).saveAll(requestList);
-    }
-
-    @Test
-    public void saveAllByUserTest() {
         User user = new User("user");
         List<Data> requestList = new java.util.ArrayList<>();
         requestList.add(new Data("id", "0;1;2;3;", user));
@@ -47,15 +36,15 @@ public class DataRepositoryHibernateUnitTest {
 
     @Test
     public void findAllByNameTest() {
-        List<Data> requestList = new java.util.ArrayList<>();
+        List<Data> requestList = new ArrayList<>();
         requestList.add(new Data("id", "0;1;2;3;"));
         repository.saveAll(requestList);
         String request = "id";
 
-        when(crudRepository.findAllByName(eq(request))).thenReturn(requestList);
+        when(crudRepository.findAllByName(request)).thenReturn(requestList);
         List<Data> responseList = repository.findAllByName(request);
 
-        verify(crudRepository).findAllByName(request);
+        verify(crudRepository).findAllByName(eq(request));
         Assertions.assertEquals(requestList, responseList);
     }
 
@@ -67,19 +56,22 @@ public class DataRepositoryHibernateUnitTest {
         List<Data> requestList = new ArrayList<>();
         requestList.add(new Data("id", "0;1;2;3;", user1));
         requestList.add(new Data("name", "ричард;жорж;мария;пьер;", user2));
+        repository.saveAll(requestList);
+        String request = user1.getName();
 
         List<Data> expectedList = new ArrayList<>();
         expectedList.add(new Data("id", "0;1;2;3;", user1));
 
-        when(crudRepository.findAllByUserName(eq("user1"))).thenReturn(expectedList);
-
+        when(crudRepository.findAllByUserName(request)).thenReturn(expectedList);
         List<Data> responseList = repository.findAllByUserName(user1.getName());
+
+        verify(crudRepository).findAllByUserName(eq(request));
         Assertions.assertEquals(expectedList, responseList);
     }
 
     @Test
     public void findAllTest() {
-        List<Data> requestList = new java.util.ArrayList<>();
+        List<Data> requestList = new ArrayList<>();
         requestList.add(new Data("id", "0;1;2;3;"));
         repository.saveAll(requestList);
 
@@ -91,8 +83,33 @@ public class DataRepositoryHibernateUnitTest {
     }
 
     @Test
-    public void deleteAll() {
-        List<Data> requestList = new java.util.ArrayList<>();
+    public void deleteAllByNameTest() {
+        List<Data> requestList = new ArrayList<>();
+        requestList.add(new Data("id", "0;1;2;3;"));
+        repository.saveAll(requestList);
+
+        String request = "id";
+
+        repository.deleteAllByName(request);
+        verify(crudRepository).deleteAllByName(eq(request));
+    }
+
+    @Test
+    public void deleteAllByUserNameTest() {
+        User user = new User("user");
+        List<Data> requestList = new ArrayList<>();
+        requestList.add(new Data("id", "0;1;2;3;", user));
+        repository.saveAll(requestList);
+
+        String request = "user";
+
+        repository.deleteAllByUserName(request);
+        verify(crudRepository).deleteAllByUserName(eq(request));
+    }
+
+    @Test
+    public void deleteAllTest() {
+        List<Data> requestList = new ArrayList<>();
         requestList.add(new Data("id", "0;1;2;3;"));
         repository.saveAll(requestList);
 

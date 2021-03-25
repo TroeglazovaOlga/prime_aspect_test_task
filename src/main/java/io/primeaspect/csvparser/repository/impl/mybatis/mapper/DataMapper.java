@@ -1,24 +1,20 @@
 package io.primeaspect.csvparser.repository.impl.mybatis.mapper;
 
 import io.primeaspect.csvparser.model.Data;
-import org.apache.ibatis.annotations.Delete;
-import org.apache.ibatis.annotations.Insert;
-import org.apache.ibatis.annotations.Mapper;
-import org.apache.ibatis.annotations.Param;
-import org.apache.ibatis.annotations.Select;
+import org.apache.ibatis.annotations.*;
 
 import java.util.List;
 
 @Mapper
 public interface DataMapper {
     @Insert({
-        "<script>",
-            "insert into data(name, content) ",
-            "values ",
-            "<foreach item='item' collection='dataList' separator=',' >",
-                "( #{item.name}, #{item.content} )",
-            "</foreach>",
-        "</script>"
+            "<script>",
+                "INSERT INTO data(name, content) ",
+                "VALUES ",
+                "<foreach item='item' collection='dataList' separator=',' >",
+                    "( #{item.name}, #{item.content} )",
+                "</foreach>",
+            "</script>"
     })
     void createData(List<Data> dataList);
 
@@ -28,9 +24,9 @@ public interface DataMapper {
     @Select("SELECT id, name, content FROM data")
     List<Data> findAll();
 
-    @Select("select count(*) from data")
-    Integer count();
+    @Delete("DELETE FROM data WHERE name = #{name")
+    void deleteByName(String name);
 
-    @Delete("delete from data")
+    @Delete("DELETE FROM data")
     void deleteAll();
 }

@@ -1,6 +1,7 @@
 package io.primeaspect.csvparser.repository.impl.mybatis.repository;
 
 import io.primeaspect.csvparser.model.Data;
+import io.primeaspect.csvparser.model.User;
 import io.primeaspect.csvparser.repository.DataRepository;
 import io.primeaspect.csvparser.repository.impl.mybatis.mapper.DataMapper;
 import org.springframework.stereotype.Repository;
@@ -21,11 +22,6 @@ public class DataRepositoryMyBatis implements DataRepository {
     }
 
     @Override
-    public void saveAllByUser(List<Data> data) {
-
-    }
-
-    @Override
     public List<Data> findAllByName(String name) {
         return mapper.findAllByName(name);
     }
@@ -41,9 +37,12 @@ public class DataRepositoryMyBatis implements DataRepository {
     }
 
     @Override
-    public int count() {
-        return mapper.count() == null? 0 : mapper.count();
+    public void deleteAllByName(String name) {
+        mapper.deleteByName(name);
     }
+
+    @Override
+    public void deleteAllByUserName(String name) {}
 
     @Override
     public void deleteAll() {

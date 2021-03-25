@@ -43,7 +43,7 @@ public class DataRepositoryJdbcUnitTest {
         String request = "id";
 
         when(jdbcTemplate.query(anyString(), any(Object[].class),
-                        any(RowMapper.class))).thenReturn(requestList);
+                any(RowMapper.class))).thenReturn(requestList);
 
         List<Data> responseList = repository.findAllByName(request);
 

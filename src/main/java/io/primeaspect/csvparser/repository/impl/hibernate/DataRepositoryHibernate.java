@@ -22,11 +22,6 @@ public class DataRepositoryHibernate implements DataRepository {
     }
 
     @Override
-    public void saveAllByUser(List<Data> data) {
-        repository.saveAll(data);
-    }
-
-    @Override
     public List<Data> findAllByName(String name) {
         return repository.findAllByName(name);
     }
@@ -42,8 +37,13 @@ public class DataRepositoryHibernate implements DataRepository {
     }
 
     @Override
-    public int count() {
-        return (int) repository.count();
+    public void deleteAllByName(String name) {
+        this.repository.deleteAllByName(name);
+    }
+
+    @Override
+    public void deleteAllByUserName(String name) {
+        this.repository.deleteAllByUserName(name);
     }
 
     @Override

@@ -1,20 +1,23 @@
 package io.primeaspect.csvparser.model;
 
 import javax.persistence.*;
-import java.util.List;
 import java.util.Objects;
 
 @Entity
-@Table(name="user")
+@Table(name = "user")
 public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
     private String name;
-    @OneToMany(mappedBy = "user")
-    private List<Data> dataList;
 
-    public User() {}
+    public User() {
+    }
+
+    public User(long id, String name) {
+        this.id = id;
+        this.name = name;
+    }
 
     public User(String name) {
         this.name = name;
@@ -36,14 +39,6 @@ public class User {
         this.name = name;
     }
 
-    public List<Data> getDataList() {
-        return dataList;
-    }
-
-    public void setDataList(List<Data> dataList) {
-        this.dataList = dataList;
-    }
-
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -55,14 +50,5 @@ public class User {
     @Override
     public int hashCode() {
         return Objects.hash(id, name);
-    }
-
-    @Override
-    public String toString() {
-        return "User{" +
-                "id=" + id +
-                ", name='" + name + '\'' +
-                ", dataList=" + dataList +
-                '}';
     }
 }
