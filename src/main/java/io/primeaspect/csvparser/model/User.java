@@ -11,8 +11,7 @@ public class User {
     private long id;
     private String name;
 
-    public User() {
-    }
+    public User() {}
 
     public User(long id, String name) {
         this.id = id;
@@ -44,11 +43,19 @@ public class User {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         User user = (User) o;
-        return id == user.id && Objects.equals(name, user.name);
+        return Objects.equals(name, user.name);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, name);
+        return Objects.hash(name);
+    }
+
+    @Override
+    public String toString() {
+        return "User{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                '}';
     }
 }

@@ -1,7 +1,8 @@
 package io.primeaspect.csvparser.test.repository.mybatis;
 
 import io.primeaspect.csvparser.model.Data;
-import io.primeaspect.csvparser.repository.impl.mybatis.mapper.DataMapper;
+import io.primeaspect.csvparser.model.User;
+import io.primeaspect.csvparser.repository.impl.mybatis.mapper.DataMapperMyBatis;
 import io.primeaspect.csvparser.repository.impl.mybatis.repository.DataRepositoryMyBatis;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Assertions;
@@ -13,7 +14,7 @@ import java.util.List;
 import static org.mockito.Mockito.*;
 
 public class DataRepositoryMyBatisUnitTest {
-    private final DataMapper mapper = Mockito.mock(DataMapper.class);
+    private final DataMapperMyBatis mapper = Mockito.mock(DataMapperMyBatis.class);
     private final DataRepositoryMyBatis repository = new DataRepositoryMyBatis(mapper);
 
     @AfterEach
@@ -23,8 +24,9 @@ public class DataRepositoryMyBatisUnitTest {
 
     @Test
     public void saveAllTest() {
+        User user = new User("user");
         List<Data> requestList = new java.util.ArrayList<>();
-        requestList.add(new Data("id", "0;1;2;3;"));
+        requestList.add(new Data("id", "0;1;2;3;", user));
 
         repository.saveAll(requestList);
         verify(mapper).createData(requestList);
@@ -32,8 +34,9 @@ public class DataRepositoryMyBatisUnitTest {
 
     @Test
     public void findAllByNameTest() {
+        User user = new User("user");
         List<Data> requestList = new java.util.ArrayList<>();
-        requestList.add(new Data("id", "0;1;2;3;"));
+        requestList.add(new Data("id", "0;1;2;3;", user));
         repository.saveAll(requestList);
         String request = "id";
 
@@ -46,8 +49,9 @@ public class DataRepositoryMyBatisUnitTest {
 
     @Test
     public void findAllTest() {
+        User user = new User("user");
         List<Data> requestList = new java.util.ArrayList<>();
-        requestList.add(new Data("id", "0;1;2;3;"));
+        requestList.add(new Data("id", "0;1;2;3;", user));
         repository.saveAll(requestList);
 
         when(mapper.findAll()).thenReturn(requestList);
@@ -59,8 +63,9 @@ public class DataRepositoryMyBatisUnitTest {
 
     @Test
     public void deleteAll() {
+        User user = new User("user");
         List<Data> requestList = new java.util.ArrayList<>();
-        requestList.add(new Data("id", "0;1;2;3;"));
+        requestList.add(new Data("id", "0;1;2;3;", user));
         repository.saveAll(requestList);
 
         repository.deleteAll();

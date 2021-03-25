@@ -19,11 +19,6 @@ public class Data implements Serializable {
 
     public Data() {}
 
-    public Data(String name, String content) {
-        this.name = name;
-        this.content = content;
-    }
-
     public Data(String name, String content, User user) {
         this.name = name;
         this.content = content;
@@ -73,5 +68,15 @@ public class Data implements Serializable {
     @Override
     public int hashCode() {
         return Objects.hash(name, content, user);
+    }
+
+    @Override
+    public String toString() {
+        return "Data{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                ", content='" + content + '\'' +
+                ", user=" + user +
+                '}';
     }
 }

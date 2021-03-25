@@ -36,8 +36,9 @@ public class DataRepositoryHibernateUnitTest {
 
     @Test
     public void findAllByNameTest() {
+        User user = new User("user");
         List<Data> requestList = new ArrayList<>();
-        requestList.add(new Data("id", "0;1;2;3;"));
+        requestList.add(new Data("id", "0;1;2;3;", user));
         repository.saveAll(requestList);
         String request = "id";
 
@@ -71,8 +72,9 @@ public class DataRepositoryHibernateUnitTest {
 
     @Test
     public void findAllTest() {
+        User user = new User("user");
         List<Data> requestList = new ArrayList<>();
-        requestList.add(new Data("id", "0;1;2;3;"));
+        requestList.add(new Data("id", "0;1;2;3;", user));
         repository.saveAll(requestList);
 
         when(crudRepository.findAll()).thenReturn(requestList);
@@ -84,8 +86,9 @@ public class DataRepositoryHibernateUnitTest {
 
     @Test
     public void deleteAllByNameTest() {
+        User user = new User("user");
         List<Data> requestList = new ArrayList<>();
-        requestList.add(new Data("id", "0;1;2;3;"));
+        requestList.add(new Data("id", "0;1;2;3;", user));
         repository.saveAll(requestList);
 
         String request = "id";
@@ -109,8 +112,9 @@ public class DataRepositoryHibernateUnitTest {
 
     @Test
     public void deleteAllTest() {
+        User user = new User("user");
         List<Data> requestList = new ArrayList<>();
-        requestList.add(new Data("id", "0;1;2;3;"));
+        requestList.add(new Data("id", "0;1;2;3;", user));
         repository.saveAll(requestList);
 
         repository.deleteAll();

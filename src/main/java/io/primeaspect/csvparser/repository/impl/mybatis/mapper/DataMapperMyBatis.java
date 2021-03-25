@@ -6,7 +6,7 @@ import org.apache.ibatis.annotations.*;
 import java.util.List;
 
 @Mapper
-public interface DataMapper {
+public interface DataMapperMyBatis {
     @Insert({
             "<script>",
                 "INSERT INTO data(name, content) ",

@@ -1,8 +1,9 @@
 package io.primeaspect.csvparser.test.repository.mybatis;
 
 import io.primeaspect.csvparser.model.Data;
-import io.primeaspect.csvparser.repository.impl.jdbc.DataRepositoryJdbc;
-import io.primeaspect.csvparser.repository.impl.mybatis.mapper.DataMapper;
+import io.primeaspect.csvparser.model.User;
+import io.primeaspect.csvparser.repository.impl.jdbc.repository.DataRepositoryJdbc;
+import io.primeaspect.csvparser.repository.impl.mybatis.mapper.DataMapperMyBatis;
 import io.primeaspect.csvparser.repository.impl.mybatis.repository.DataRepositoryMyBatis;
 import io.primeaspect.csvparser.test.TestConfiguration;
 import org.junit.jupiter.api.AfterEach;
@@ -16,7 +17,7 @@ import org.springframework.context.annotation.ComponentScan;
 import java.util.ArrayList;
 import java.util.List;
 
-@SpringBootTest(classes = {TestConfiguration.class, DataRepositoryMyBatis.class, DataMapper.class})
+@SpringBootTest(classes = {TestConfiguration.class, DataRepositoryMyBatis.class, DataMapperMyBatis.class})
 @ComponentScan(basePackages = "io.primeaspect.csvparser")
 @MapperScan("io.primeaspect.csvparser.repository.impl.mybatis.mapper")
 public class DataRepositoryMyBatisTest {
@@ -30,10 +31,11 @@ public class DataRepositoryMyBatisTest {
 
     @Test
     public void saveAllTest() {
+        User user = new User("user");
         List<Data> requestList = new java.util.ArrayList<>();
-        requestList.add(new Data("id", "0;1;2;3;"));
-        requestList.add(new Data("name", "ричард;жорж;мария;пьер;"));
-        requestList.add(new Data("sex", "м;ж;"));
+        requestList.add(new Data("id", "0;1;2;3;", user));
+        requestList.add(new Data("name", "ричард;жорж;мария;пьер;", user));
+        requestList.add(new Data("sex", "м;ж;", user));
 
         repository.saveAll(requestList);
         List<Data> responseList = repository.findAll();
@@ -42,7 +44,8 @@ public class DataRepositoryMyBatisTest {
 
     @Test
     public void findAllByNameTest() {
-        Data requestData = new Data("path", "/hello/уточка;/hello/лошадка;/hello/собачка;");
+        User user = new User("user");
+        Data requestData = new Data("path", "/hello/уточка;/hello/лошадка;/hello/собачка;", user);
         List<Data> requestList = new ArrayList<>();
         requestList.add(requestData);
 
@@ -52,11 +55,32 @@ public class DataRepositoryMyBatisTest {
     }
 
     @Test
+    public void findAllByUserNameTest() {
+        User user1 = new User("user1");
+        User user2 = new User("user2");
+
+        List<Data> requestByUser1 = new ArrayList<>();
+        requestByUser1.add(new Data("id", "0;1;2;3;", user1));
+        List<Data> requestByUser2 = new ArrayList<>();
+        requestByUser2.add(new Data("name", "ричард;жорж;мария;пьер;", user2));
+
+        List<Data> expectedList = new ArrayList<>();
+        expectedList.add(new Data("id", "0;1;2;3;", user1));
+
+        repository.saveAll(requestByUser1);
+        repository.saveAll(requestByUser2);
+
+        List<Data> responseList = repository.findAllByUserName(user1.getName());
+        Assertions.assertEquals(expectedList, responseList);
+    }
+
+    @Test
     public void findAllTest() {
+        User user = new User("user");
         List<Data> requestList = new java.util.ArrayList<>();
-        requestList.add(new Data("id", "0;1;2;3;"));
-        requestList.add(new Data("name", "ричард;жорж;мария;пьер;"));
-        requestList.add(new Data("sex", "м;ж;"));
+        requestList.add(new Data("id", "0;1;2;3;", user));
+        requestList.add(new Data("name", "ричард;жорж;мария;пьер;", user));
+        requestList.add(new Data("sex", "м;ж;", user));
         repository.saveAll(requestList);
 
         List<Data> response = repository.findAll();
@@ -65,9 +89,12 @@ public class DataRepositoryMyBatisTest {
 
     @Test
     public void deleteAllByName() {
+        User user1 = new User("user1");
+        User user2 = new User("user2");
+
         List<Data> requestList = new ArrayList<>();
-        requestList.add(new Data("id", "0;1;2;3;"));
-        requestList.add(new Data("name", "ричард;жорж;мария;пьер;"));
+        requestList.add(new Data("id", "0;1;2;3;", user1));
+        requestList.add(new Data("name", "ричард;жорж;мария;пьер;", user2));
         repository.saveAll(requestList);
 
         String request = "id";
@@ -78,11 +105,29 @@ public class DataRepositoryMyBatisTest {
     }
 
     @Test
+    public void deleteAllByUserName() {
+        User user1 = new User("user1");
+        User user2 = new User("user2");
+
+        List<Data> requestList = new ArrayList<>();
+        requestList.add(new Data("id", "0;1;2;3;", user1));
+        requestList.add(new Data("name", "ричард;жорж;мария;пьер;", user2));
+        repository.saveAll(requestList);
+
+        String request = "user1";
+
+        repository.deleteAllByUserName(request);
+        List<Data> resultList = repository.findAllByUserName(request);
+        Assertions.assertTrue(resultList.isEmpty());
+    }
+
+    @Test
     public void deleteAll() {
+        User user = new User("user");
         List<Data> requestList = new java.util.ArrayList<>();
-        requestList.add(new Data("id", "0;1;2;3;"));
-        requestList.add(new Data("name", "ричард;жорж;мария;пьер;"));
-        requestList.add(new Data("sex", "м;ж;"));
+        requestList.add(new Data("id", "0;1;2;3;", user));
+        requestList.add(new Data("name", "ричард;жорж;мария;пьер;", user));
+        requestList.add(new Data("sex", "м;ж;", user));
         repository.saveAll(requestList);
 
         repository.deleteAll();

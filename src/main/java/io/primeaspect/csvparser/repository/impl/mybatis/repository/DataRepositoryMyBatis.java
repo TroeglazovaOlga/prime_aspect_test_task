@@ -1,18 +1,17 @@
 package io.primeaspect.csvparser.repository.impl.mybatis.repository;
 
 import io.primeaspect.csvparser.model.Data;
-import io.primeaspect.csvparser.model.User;
 import io.primeaspect.csvparser.repository.DataRepository;
-import io.primeaspect.csvparser.repository.impl.mybatis.mapper.DataMapper;
+import io.primeaspect.csvparser.repository.impl.mybatis.mapper.DataMapperMyBatis;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
 
 @Repository
 public class DataRepositoryMyBatis implements DataRepository {
-    private final DataMapper mapper;
+    private final DataMapperMyBatis mapper;
 
-    public DataRepositoryMyBatis(DataMapper dataMapper) {
+    public DataRepositoryMyBatis(DataMapperMyBatis dataMapper) {
         this.mapper = dataMapper;
     }
 

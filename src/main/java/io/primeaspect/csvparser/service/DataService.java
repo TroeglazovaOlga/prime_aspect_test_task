@@ -24,7 +24,7 @@ public class DataService {
         List<Data> resultList = parser.parse(request.getContent())
                 .entrySet()
                 .stream()
-                .map(set -> new Data(set.getKey(), set.getValue()))
+                .map(set -> new Data(set.getKey(), set.getValue(), request.getUser()))
                 .collect(Collectors.toList());
         resultList.forEach(result -> result.setUser(request.getUser()));
 

@@ -54,7 +54,8 @@ public class DataServiceTest {
 
     @Test
     public void findAllByNameTest() throws IOException {
-        Data requestData = new Data("path", "/hello/уточка;/hello/лошадка;/hello/собачка;");
+        User user = new User("user");
+        Data requestData = new Data("path", "/hello/уточка;/hello/лошадка;/hello/собачка;", user);
         List<Data> requestList = new ArrayList<>();
         requestList.add(requestData);
         repository.saveAll(requestList);
@@ -86,10 +87,11 @@ public class DataServiceTest {
 
     @Test
     public void findAllTest() throws IOException {
+        User user = new User("user");
         List<Data> list = new ArrayList<>();
-        list.add(new Data("id", "0;1;2;3;"));
-        list.add(new Data("name", "ричард;жорж;мария;пьер;"));
-        list.add(new Data("sex", "м;ж;"));
+        list.add(new Data("id", "0;1;2;3;", user));
+        list.add(new Data("name", "ричард;жорж;мария;пьер;", user));
+        list.add(new Data("sex", "м;ж;", user));
 
         when(repository.findAll()).thenReturn(list);
 
