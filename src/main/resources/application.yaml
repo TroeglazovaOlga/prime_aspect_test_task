@@ -10,3 +10,5 @@ spring:
       path: /h2
   jpa:
     show-sql: true
+    hibernate:
+      ddl-auto: none
