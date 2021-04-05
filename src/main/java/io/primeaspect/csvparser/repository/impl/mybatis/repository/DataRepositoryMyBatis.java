@@ -1,23 +1,28 @@
 package io.primeaspect.csvparser.repository.impl.mybatis.repository;
 
 import io.primeaspect.csvparser.model.Data;
+import io.primeaspect.csvparser.model.User;
 import io.primeaspect.csvparser.repository.DataRepository;
-import io.primeaspect.csvparser.repository.impl.mybatis.mapper.DataMapper;
+import io.primeaspect.csvparser.repository.impl.mybatis.mapper.DataMapperMyBatis;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
 
 @Repository
 public class DataRepositoryMyBatis implements DataRepository {
-    private final DataMapper mapper;
+    private final DataMapperMyBatis mapper;
 
-    public DataRepositoryMyBatis(DataMapper dataMapper) {
+    public DataRepositoryMyBatis(DataMapperMyBatis dataMapper) {
         this.mapper = dataMapper;
     }
 
     @Override
     public void saveAll(List<Data> data) {
-        mapper.createData(data);
+        User user = data.get(0).getUser();
+        if (mapper.findUserByName(user.getName()) == null) {
+            mapper.createUser(user);
+        }
+        mapper.createData(data, user);
     }
 
     @Override
@@ -26,13 +31,23 @@ public class DataRepositoryMyBatis implements DataRepository {
     }
 
     @Override
+    public List<Data> findAllByUserName(String name) {
+        return mapper.findAllByUserName(name);
+    }
+
+    @Override
     public List<Data> findAll() {
         return mapper.findAll();
     }
 
     @Override
-    public int count() {
-        return mapper.count() == null? 0 : mapper.count();
+    public void deleteAllByName(String name) {
+        mapper.deleteByName(name);
+    }
+
+    @Override
+    public void deleteAllByUserName(String name) {
+        mapper.deleteByUserName(name);
     }
 
     @Override

@@ -10,9 +10,9 @@ import java.util.List;
 @Primary
 @Repository
 public class DataRepositoryHibernate implements DataRepository {
-    private final CustomCrudRepository repository;
+    private final DataCrudRepository repository;
 
-    public DataRepositoryHibernate(CustomCrudRepository repository) {
+    public DataRepositoryHibernate(DataCrudRepository repository) {
         this.repository = repository;
     }
 
@@ -27,13 +27,23 @@ public class DataRepositoryHibernate implements DataRepository {
     }
 
     @Override
+    public List<Data> findAllByUserName(String name) {
+        return repository.findAllByUserName(name);
+    }
+
+    @Override
     public List<Data> findAll() {
         return (List<Data>) repository.findAll();
     }
 
     @Override
-    public int count() {
-        return (int) repository.count();
+    public void deleteAllByName(String name) {
+        this.repository.deleteAllByName(name);
+    }
+
+    @Override
+    public void deleteAllByUserName(String name) {
+        this.repository.deleteAllByUserName(name);
     }
 
     @Override

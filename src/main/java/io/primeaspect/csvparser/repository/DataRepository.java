@@ -7,7 +7,9 @@ import java.util.List;
 public interface DataRepository {
     void saveAll(List<Data> data);
     List<Data> findAllByName(String name);
+    List<Data> findAllByUserName(String name);
     List<Data> findAll();
-    int count();
+    void deleteAllByName(String name);
+    void deleteAllByUserName(String name);
     void deleteAll();
 }

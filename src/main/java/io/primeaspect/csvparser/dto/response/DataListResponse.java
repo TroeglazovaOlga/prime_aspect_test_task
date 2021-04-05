@@ -1,13 +1,14 @@
-package io.primeaspect.csvparser.dto;
+package io.primeaspect.csvparser.dto.response;
+
 import io.primeaspect.csvparser.model.Data;
 
 import java.util.List;
 import java.util.Objects;
 
-public class DataListDto {
+public class DataListResponse {
     private List<Data> resultList;
 
-    public DataListDto(List<Data> resultList) {
+    public DataListResponse(List<Data> resultList) {
         this.resultList = resultList;
     }
 
@@ -23,19 +24,12 @@ public class DataListDto {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        DataListDto that = (DataListDto) o;
+        DataListResponse that = (DataListResponse) o;
         return Objects.equals(resultList, that.resultList);
     }
 
     @Override
     public int hashCode() {
         return Objects.hash(resultList);
-    }
-
-    @Override
-    public String toString() {
-        return "DataListDto{" +
-                "resultList=" + resultList.toString() +
-                '}';
     }
 }
