@@ -72,21 +72,11 @@ public class Data implements Serializable {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Data data = (Data) o;
-        return Objects.equals(name, data.name) && Objects.equals(content, data.content) && Objects.equals(user, data.user);
+        return Objects.equals(name, data.name) && Objects.equals(content, data.content);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(name, content, user);
-    }
-
-    @Override
-    public String toString() {
-        return "Data{" +
-                "id=" + id +
-                ", name='" + name + '\'' +
-                ", content='" + content + '\'' +
-                ", user=" + user +
-                '}';
+        return Objects.hash(name, content);
     }
 }
